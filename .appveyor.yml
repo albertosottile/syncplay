@@ -13,8 +13,7 @@ init:
   - set PATH=C:\Miniconda;C:\Miniconda\Scripts;%PATH%
   - cmd: conda create -n syncplay -y  
   - cmd: activate syncplay
-  - cmd: conda install python pywin32 -y
-  - cmd: conda install -c conda-forge pyside2 -y
+  - cmd: conda install python pywin32 pyqt -y
   - cmd: pip install twisted py2exe_py2 zope.interface
   - cmd: type nul > C:\Miniconda\envs\syncplay\lib\site-packages\zope\__init__.py
   - cmd: pip freeze
@@ -36,11 +35,11 @@ build: off
 artifacts:
   path: 'syncplay_v1.5.0'
   type: zip
-  name: Syncplay_win_pyside2
+  name: Syncplay_win_pyqt5
 
 # Push artefact to S3 bucket and list all
 before_deploy:
-  - cmd: python -c "from PySide2 import QtCore; print QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.PluginsPath)"
+  - cmd: python -c "from PyQt5 import QtCore; print QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.PluginsPath)"
 
 # Deploy build to Amazon S3 bucket
 deploy:

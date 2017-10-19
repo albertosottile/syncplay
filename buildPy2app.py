@@ -14,10 +14,9 @@ DATA_FILES = [
     ('resources', glob('resources/*.png') + glob('resources/*.rtf')),
 ]
 OPTIONS = {
-	'iconfile':'resources/icon.icns',
-	'includes': {'PySide2.QtCore', 'PySide2.QtUiTools', 'PySide2.QtGui','PySide2.QtWidgets'},
-    'excludes': {'PySide', 'PySide.QtCore', 'PySide.QtUiTools', 'PySide.QtGui'},
-    'qt_plugins': ['platforms/libqcocoa.dylib', 'platforms/libqminimal.dylib','platforms/libqoffscreen.dylib'],
+	'iconfile': 'resources/icon.icns',
+	'includes': {'PyQt5.QtCore', 'PyQt5.QtUiTools', 'PyQt5.QtGui','PyQt5.QtWidgets'},
+    'qt_plugins': ['platforms/libqcocoa.dylib'],
 	'plist': {
 		'CFBundleName':'Syncplay',
 		'CFBundleShortVersionString':syncplay.version,

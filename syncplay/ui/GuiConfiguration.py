@@ -1,9 +1,11 @@
-from syncplay.vendor.Qt import QtCore, QtWidgets, QtGui, __binding__, IsPySide, IsPySide2
+from syncplay.vendor.Qt import QtCore, QtWidgets, QtGui, __binding__, IsPySide, IsPySide2, IsPyQt5
 from syncplay.vendor.Qt.QtCore import Qt, QSettings, QCoreApplication, QSize, QPoint, QUrl, QLine
 from syncplay.vendor.Qt.QtWidgets import QApplication, QLineEdit, QLabel, QCheckBox, QButtonGroup, QRadioButton, QDoubleSpinBox, QPlainTextEdit
 from syncplay.vendor.Qt.QtGui import QCursor, QIcon, QImage, QDesktopServices
 if IsPySide2:
     from PySide2.QtCore import QStandardPaths
+elif IsPyQt5:
+    from PyQt5.QtCore import QStandardPaths
 from syncplay.players.playerFactory import PlayerFactory
 from datetime import datetime
 from syncplay import utils
@@ -186,7 +188,7 @@ class ConfigDialog(QtWidgets.QDialog):
         if iconpath is not None and iconpath != "":
             if iconpath.endswith('.mng'):
                 movie = QtGui.QMovie(self.resourcespath + iconpath)
-                movie.setCacheMode(QtGui.QMovie.CacheMode.CacheAll)
+                movie.setCacheMode(QtGui.QMovie.CacheAll)
                 self.executableiconLabel.setMovie(movie)
                 movie.start()
             else:
@@ -291,7 +293,11 @@ class ConfigDialog(QtWidgets.QDialog):
         self.lastCheckedForUpdates = settings.value("lastCheckedQt", None)
         if self.lastCheckedForUpdates:
             if self.config["lastCheckedForUpdates"] is not None and self.config["lastCheckedForUpdates"] is not "":
-                if self.lastCheckedForUpdates.toPython() > datetime.strptime(self.config["lastCheckedForUpdates"], "%Y-%m-%d %H:%M:%S.%f"):
+                if IsPySide or IsPySide2:
+                    lastCheckedPython = self.lastCheckedForUpdates.toPython()
+                elif IsPyQt5:
+                    lastCheckedPython = self.lastCheckedForUpdates.toPyDateTime()
+                if lastCheckedPython > datetime.strptime(self.config["lastCheckedForUpdates"], "%Y-%m-%d %H:%M:%S.%f"):
                     self.config["lastCheckedForUpdates"] = self.lastCheckedForUpdates.toString("yyyy-MM-d HH:mm:ss.z")
             else:
                 self.config["lastCheckedForUpdates"] = self.lastCheckedForUpdates.toString("yyyy-MM-d HH:mm:ss.z")
@@ -919,7 +925,7 @@ class ConfigDialog(QtWidgets.QDialog):
 
         self.displaySettingsGroup = QtWidgets.QGroupBox(getMessage("messages-other-title"))
         self.displaySettingsLayout = QtWidgets.QVBoxLayout()
-        self.displaySettingsLayout.setAlignment(Qt.AlignTop & Qt.AlignLeft)
+        self.displaySettingsLayout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         self.displaySettingsFrame = QtWidgets.QFrame()
 
         self.showDurationNotificationCheckbox = QCheckBox(getMessage("showdurationnotification-label"))
@@ -931,7 +937,7 @@ class ConfigDialog(QtWidgets.QDialog):
         self.languageLayout.setContentsMargins(0, 0, 0, 0)
         self.languageFrame.setLayout(self.languageLayout)
         self.languageFrame.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        self.languageLayout.setAlignment(Qt.AlignTop & Qt.AlignLeft)
+        self.languageLayout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         self.languageLabel = QLabel(getMessage("language-label"), self)
         self.languageCombobox = QtWidgets.QComboBox(self)
         self.languageCombobox.addItem(getMessage("automatic-language").format(getMessage("LANGUAGE", getInitialLanguage())))
@@ -942,8 +948,8 @@ class ConfigDialog(QtWidgets.QDialog):
             if lang == self.config['language']:
                 self.languageCombobox.setCurrentIndex(self.languageCombobox.count()-1)
         self.languageCombobox.currentIndexChanged.connect(self.languageChanged)
-        self.languageLayout.addWidget(self.languageLabel, 1, 0)
-        self.languageLayout.addWidget(self.languageCombobox, 1, 1)
+        self.languageLayout.addWidget(self.languageLabel, 1)
+        self.languageLayout.addWidget(self.languageCombobox, 1, Qt.AlignLeft)
         self.displaySettingsLayout.addWidget(self.languageFrame)
 
         self.languageLabel.setObjectName("language")
@@ -952,7 +958,7 @@ class ConfigDialog(QtWidgets.QDialog):
 
         self.displaySettingsGroup.setLayout(self.displaySettingsLayout)
         self.displaySettingsGroup.setMaximumHeight(self.displaySettingsGroup.minimumSizeHint().height())
-        self.displaySettingsLayout.setAlignment(Qt.AlignTop & Qt.AlignLeft)
+        self.displaySettingsLayout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         self.messageLayout.addWidget(self.displaySettingsGroup)
 
         # messageFrame
