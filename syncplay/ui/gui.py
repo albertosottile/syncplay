@@ -1641,7 +1641,7 @@ class MainWindow(QtWidgets.QMainWindow):
         settings.endGroup()
         settings = QSettings("Syncplay", "Interface")
         settings.beginGroup("Update")
-        settings.setValue("lastChecked", self.lastCheckedForUpdates)
+        settings.setValue("lastCheckedQt", self.lastCheckedForUpdates)
         settings.endGroup()
         settings.beginGroup("PublicServerList")
         if self.publicServerList:
@@ -1668,7 +1668,7 @@ class MainWindow(QtWidgets.QMainWindow):
         settings.endGroup()
         settings = QSettings("Syncplay", "Interface")
         settings.beginGroup("Update")
-        self.lastCheckedForUpdates = settings.value("lastChecked", None)
+        self.lastCheckedForUpdates = settings.value("lastCheckedQt", None)
         settings.endGroup()
         settings.beginGroup("PublicServerList")
         self.publicServerList = settings.value("publicServers", None)

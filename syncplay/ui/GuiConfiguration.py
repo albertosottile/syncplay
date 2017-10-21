@@ -276,7 +276,7 @@ class ConfigDialog(QtWidgets.QDialog):
     def loadLastUpdateCheckDate(self):
         settings = QSettings("Syncplay", "Interface")
         settings.beginGroup("Update")
-        self.lastCheckedForUpdates = settings.value("lastChecked", None)
+        self.lastCheckedForUpdates = settings.value("lastCheckedQt", None)
         if self.lastCheckedForUpdates:
             if self.config["lastCheckedForUpdates"] is not None and self.config["lastCheckedForUpdates"] is not "":
                 if self.lastCheckedForUpdates.toPython() > datetime.strptime(self.config["lastCheckedForUpdates"], "%Y-%m-%d %H:%M:%S.%f"):
@@ -1005,7 +1005,7 @@ class ConfigDialog(QtWidgets.QDialog):
         settings.clear()
         settings = QSettings("Syncplay", "Interface")
         settings.beginGroup("Update")
-        settings.setValue("lastChecked", None)
+        settings.setValue("lastCheckedQt", None)
         settings.endGroup()
         settings.beginGroup("PublicServerList")
         settings.setValue("publicServers", None)
