@@ -1,45 +1,50 @@
 language: objective-c
-osx_image: xcode6.4
+#osx_image: xcode7.3
+osx_image: xcode6.4 #to use for source install of PyQt5 
 
 branches:
   only:
   - qtpy-pyqt5
 
 script:
-- python buildPy2app.py py2app
+- python2 buildPy2app.py py2app
 
 before_install:
+# Install pyqt from sources
 - brew install python
 - curl -O https://raw.githubusercontent.com/Homebrew/homebrew-core/fdfc724dd532345f5c6cdf47dc43e99654e6a5fd/Formula/qt5.rb
 - brew install ./qt5.rb
-- which python
-- which pip
-- wget https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.6/PyQt5_gpl-5.6.tar.gz --no-check-certificate
+- which python2
+- which pip2
 - wget https://freefr.dl.sourceforge.net/project/pyqt/sip/sip-4.18/sip-4.18.tar.gz --no-check-certificate
 - tar -xvf sip-4.18.tar.gz
 - cd sip-4.18
-- python configure.py -d /usr/local/lib/python2.7/site-packages/
+- python2 configure.py -d /usr/local/lib/python2.7/site-packages/
 - make
 - make install
 - cd ..
+- wget https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.6/PyQt5_gpl-5.6.tar.gz --no-check-certificate
 - tar -xvf PyQt5_gpl-5.6.tar.gz
 - cd PyQt5_gpl-5.6
-- python configure.py -d /usr/local/lib/python2.7/site-packages/ --qmake=/usr/local/Cellar/qt5/5.6.1-1/bin/qmake --sip=/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/bin/sip --sip-incdir=../sip-4.18/siplib --confirm-license
+- python2 configure.py -d /usr/local/lib/python2.7/site-packages/ --qmake=/usr/local/Cellar/qt5/5.6.1-1/bin/qmake --sip=/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/bin/sip --sip-incdir=../sip-4.18/siplib --confirm-license --disable QtHelp --disable QtMultimedia --disable QtMultimediaWidgets --disable QtNetwork --disable QtOpenGL --disable QtPrintSupport --disable QtQml --disable QtQuick --disable QtSql --disable QtSvg --disable QtTest --disable QtWebKit --disable QtWebKitWidgets --disable QtXml --disable QtXmlPatterns --disable QtDesigner --disable QAxContainer --disable QtDBus --disable QtWebSockets --disable QtWebChannel --disable QtNfc --disable QtBluetooth --disable QtX11Extras --disable QtQuickWidgets --disable _QOpenGLFunctions_2_0 --disable _QOpenGLFunctions_2_1 --disable _QOpenGLFunctions_4_1_Core
 - make
 - make install
 - cd ..
+
+# Install pyqt from bottles (faster, but it does not work)
+# - brew update
+# - brew upgrade python
+# - brew install pyqt
+
 - rm -rf /usr/local/lib/python2.7/site-packages/PyQt5/uic/port_v3
-- python -c "from PyQt5 import QtCore"
-- pip install twisted appnope py2app
+- python2 -c "from PyQt5 import QtCore"
+- pip2 install twisted appnope py2app
 
 install:
 - export QT_PREFERRED_BINDING="PyQt5"
-# - git clone -b qtpy-pyqt5 https://github.com/alby128/syncplay.git syncplay-qtpy-pyqt5
-# - cd syncplay-qtpy-pyqt5
-# - git checkout qtpy-pyqt5
 
 before_deploy:
-- pip install dmgbuild
+- pip2 install dmgbuild
 - mkdir dist_dmg
 - mv resources/macos_vlc_install.command resources/.macos_vlc_install.command
 - mv resources/lua/intf/syncplay.lua resources/lua/intf/.syncplay.lua
@@ -48,7 +53,7 @@ before_deploy:
 - dmgbuild -s appdmg.py "Syncplay" dist_dmg/Syncplay_${VER}_macOS_PyQt5.dmg
 
 deploy:
-  on: qtpy-pyside2
+  on: qtpy-pyqt5
   provider: bintray
   file: "bintray.json"
   user: alby128

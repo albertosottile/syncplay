@@ -16,6 +16,7 @@ DATA_FILES = [
 OPTIONS = {
 	'iconfile': 'resources/icon.icns',
 	'includes': {'PyQt5.QtCore', 'PyQt5.QtUiTools', 'PyQt5.QtGui','PyQt5.QtWidgets'},
+	'excludes': {'PyQt5.QtHelp', 'PyQt5.QtMultimedia', 'PyQt5.QtMultimediaWidgets','PyQt5.QtNetwork', 'PyQt5.QtNfc', 'PyQt5.QtOpenGL', 'PyQt5.QtPrintSupport', 'PyQt5.QtSensors', 'PyQt5.QtSerialPort', 'PyQt5.QtQml', 'PyQt5.QtQuick', 'PyQt5.QtSql', 'PyQt5.QtSvg', 'PyQt5.QtTest', 'PyQt5.QtWebEngine', 'PyQt5.QtWebEngineCore',  'PyQt5.QtWebKit', 'PyQt5.QtWebKitWidgets', 'PyQt5.QtXml', 'PyQt5.QtXmlPatterns', 'PyQt5.QtDesigner', 'PyQt5.QtWebSockets', 'numpy', 'scipy'},
     'qt_plugins': ['platforms/libqcocoa.dylib'],
 	'plist': {
 		'CFBundleName':'Syncplay',

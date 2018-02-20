@@ -25,12 +25,10 @@ install:
   - del syncplay_v%ver%\lib\MPR.dll
   - mkdir syncplay_v%ver%\platforms
   - copy C:\Miniconda\envs\syncplay\library\plugins\platforms\qwindows.dll syncplay_v%ver%\platforms\
+  - copy Syncplay-%ver%-Setup.exe Syncplay-%ver%-Setup-PyQt5.exe
 
 # Not a project with an msbuild file, build done at install.
-build: off 
-
-after_build:
-  - copy Syncplay-$(ver)-Setup.exe Syncplay-$(ver)-Setup-PyQt5.exe
+build: off
 
 artifacts:
   - path: 'syncplay_v$(ver)'
