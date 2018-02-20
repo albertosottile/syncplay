@@ -4,11 +4,13 @@ from syncplay import constants
 import messages_en
 import messages_ru
 import messages_de
+import messages_it
 
 messages = {
            "en": messages_en.en,
            "ru": messages_ru.ru,
            "de": messages_de.de,
+           "it": messages_it.it,
            "CURRENT": None
            }
 
@@ -66,4 +68,6 @@ def getMessage(type_, locale=None):
     if messages["en"].has_key(type_):
         return unicode(messages["en"][type_])
     else:
-        raise KeyError(type_)
+        print u"WARNING: Cannot find message '{}'!".format(type_)
+        return "!{}".format(type_) # TODO: Remove
+        #raise KeyError(type_)

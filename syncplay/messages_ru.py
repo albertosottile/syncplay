@@ -17,23 +17,23 @@ ru = {
     "connected-successful-notification" : u"Соединение с сервером установлено",
     "retrying-notification" : u"%s, следующая попытка через %d секунд(ы)...",  # Seconds
 
-    "rewind-notification" : u"Перемотано из-за разницы во времени с <{}>",  # User
-    "fastforward-notification" : u"Ускорено из-за разницы во времени с <{}>",  # User
-    "slowdown-notification" : u"Воспроизведение замедлено из-за разницы во времени с <{}>",  # User
+    "rewind-notification" : u"Перемотано из-за разницы во времени с {}",  # User
+    "fastforward-notification" : u"Ускорено из-за разницы во времени с {}",  # User
+    "slowdown-notification" : u"Воспроизведение замедлено из-за разницы во времени с {}",  # User
     "revert-notification" : u"Возвращаемся к нормальной скорости воспроизведения",
 
-    "pause-notification" : u"<{}> приостановил воспроизведение",  # User
-    "unpause-notification" : u"<{}> возобновил воспроизведение",  # User
-    "seek-notification" : u"<{}> перемотал с {} на {}",  # User, from time, to time
+    "pause-notification" : u"{} приостановил воспроизведение",  # User
+    "unpause-notification" : u"{} возобновил воспроизведение",  # User
+    "seek-notification" : u"{} перемотал с {} на {}",  # User, from time, to time
 
     "current-offset-notification" : u"Текущее смещение: {} секунд(ы)",  # Offset
 
     "media-directory-list-updated-notification" : u"Папки воспроизведения обновлены.",
 
-    "room-join-notification" : u"<{}> зашел в комнату: '{}'",  # User
-    "left-notification" : u"<{}> покинул комнату",  # User
-    "left-paused-notification" : u"<{}> покинул комнату, <{}> приостановил воспроизведение",  # User who left, User who paused
-    "playing-notification" : u"<{}> включил '{}' ({})",  # User, file, duration
+    "room-join-notification" : u"{} зашел в комнату: '{}'",  # User
+    "left-notification" : u"{} покинул комнату",  # User
+    "left-paused-notification" : u"{} покинул комнату, {} приостановил воспроизведение",  # User who left, User who paused
+    "playing-notification" : u"{} включил '{}' ({})",  # User, file, duration
     "playing-notification/room-addendum" : u" в комнате: '{}'",  # Room
 
     "not-all-ready" : u"Не готовы: {}", # Usernames
@@ -44,11 +44,11 @@ ru = {
     "autoplaying-notification" : u"Автовоспроизведение через {}...",  # Number of seconds until playback will start
 
     "identifying-as-controller-notification" : u"Идентификация как оператора комнаты с паролем '{}'...",
-    "failed-to-identify-as-controller-notification" : u"<{}> не прошел идентификацию в качестве оператора комнаты.",
-    "authenticated-as-controller-notification" : u"<{}> вошел как оператор комнаты.",
+    "failed-to-identify-as-controller-notification" : u"{} не прошел идентификацию в качестве оператора комнаты.",
+    "authenticated-as-controller-notification" : u"{} вошел как оператор комнаты.",
     "created-controlled-room-notification" : u"Создана управляемая комната '{}' с паролем '{}'. Сохраните эти данные!", # RoomName, operatorPassword
 
-    "file-different-notification" : u"Вероятно, файл, который Вы смотрите, отличается от того, который смотрит <{}>.",  # User
+    "file-different-notification" : u"Вероятно, файл, который Вы смотрите, отличается от того, который смотрит {}.",  # User
     "file-differences-notification" : u"Ваш файл отличается: {}", # Differences
     "room-file-differences" : u"Несовпадения файла: {}", # File differences (filename, size, and/or duration)
     "file-difference-filename" : u"имя",
@@ -108,9 +108,10 @@ ru = {
     "server-timeout-error" : u"Подключение к серверу превысило лимит времени",
     "mpc-slave-error" : u"Невозможно запустить MPC в slave режиме!",
     "mpc-version-insufficient-error" : u"Версия MPC слишком старая, пожалуйста, используйте `mpc-hc` >= `{}`",
+    "mpc-be-version-insufficient-error" : u"Версия MPC слишком старая, пожалуйста, используйте `mpc-be` >= `{}`",
     "mpv-version-error" : u"Syncplay не совместим с данной версией mpv. Пожалуйста, используйте другую версию mpv (лучше свежайшую).",
     "player-file-open-error" : u"Проигрыватель не может открыть файл.",
-    "player-path-error" : u"Путь к проигрывателю задан неверно. Supported players are: mpv, VLC, MPC-HC and mplayer2.", # TODO: Translate last sentence
+    "player-path-error" : u"Путь к проигрывателю задан неверно. Supported players are: mpv, VLC, MPC-HC, MPC-BE and mplayer2.", # TODO: Translate last sentence
     "hostname-empty-error" : u"Имя пользователя не может быть пустым.",
     "empty-error" : u"{} не может быть пустым.",  # Configuration
     "media-player-error" : u"Ошибка проигрывателя: \"{}\"",  # Error line
@@ -120,7 +121,7 @@ ru = {
 
     "unable-to-start-client-error" : u"Невозможно запустить клиент",
 
-    "player-path-config-error": u"Путь к проигрывателю установлен неверно. Supported players are: mpv, VLC, MPC-HC and mplayer2", # To do: Translate end
+    "player-path-config-error": u"Путь к проигрывателю установлен неверно. Supported players are: mpv, VLC, MPC-HC, MPC-BE and mplayer2", # To do: Translate end
     "no-file-path-config-error" : u"Файл должен быть указан до включения проигрывателя",
     "no-hostname-config-error": u"Имя сервера не может быть пустым",
     "invalid-port-config-error" : u"Неверный номер порта",
@@ -134,7 +135,13 @@ ru = {
     "vlc-failed-versioncheck" : u"Данная версия VLC не поддерживается Syncplay. Пожалуйста, используйте VLC версии 2 или выше.",
     "vlc-failed-other" : u"Во время загрузки скрипта интерфейса syncplay.lua в VLC произошла следующая ошибка: {}",  # Syncplay Error
 
-    "not-supported-by-server-error" : u"Эта возможность не поддерживается сервером. Требуется сервер Syncplay {}+, вы подключены к серверу Syncplay {}.", #minVersion, serverVersion
+    "feature-sharedPlaylists": u"shared playlists",  # used for not-supported-by-server-error # TODO: Translate
+    "feature-chat": u"chat",  # used for not-supported-by-server-error # TODO: Translate
+    "feature-readiness": u"readiness",  # used for not-supported-by-server-error # TODO: Translate
+    "feature-managedRooms": u"managed rooms",  # used for not-supported-by-server-error # TODO: Translate
+
+    "not-supported-by-server-error": u"The {} feature is not supported by this server..",  # feature # TODO: Translate
+    #OLD TRANSLATION: "not-supported-by-server-error" : u"Эта возможность не поддерживается сервером. Требуется сервер Syncplay {}+, вы подключены к серверу Syncplay {}.", #minVersion, serverVersion
     "shared-playlists-not-supported-by-server-error" : u"Общие списки воспроизведения могут не поддерживаться сервером. Для корректной работы требуется сервер Syncplay {}+, вы подключены к серверу Syncplay {}.", #minVersion, serverVersion
     "shared-playlists-disabled-by-server-error" : "The shared playlist feature has been disabled in the server configuration. To use this feature you will need to connect to a different server.", # TODO: Translate
 
@@ -151,7 +158,7 @@ ru = {
     "failed-to-load-server-list-error" : u"Не удалось загрузить список публичных серверов. Откройте http://www.syncplay.pl/ через браузер.",
 
     # Client arguments
-    "argument-description" : u'Решение для синхронного воспроизведения в VLC, MPlayer или MPC-HC через Интернет.',
+    "argument-description" : u'Решение для синхронного воспроизведения в VLC, MPlayer или MPC-HC/BE через Интернет.',
     "argument-epilog" : u'Если параметр не будет передан, то будет использоваться значение, указанное в _config.',
     "nogui-argument" : u'не использовать GUI',
     "host-argument" : u'адрес сервера',
@@ -195,7 +202,7 @@ ru = {
     "filename-privacy-label" : u"Имя файла:",
     "filesize-privacy-label" : u"Размер файла:",
     "checkforupdatesautomatically-label" : u"Проверять обновления автоматически",
-    "slowondesync-label" : u"Замедлять при небольших рассинхронизациях (не поддерживаетя в MPC-HC)",
+    "slowondesync-label" : u"Замедлять при небольших рассинхронизациях (не поддерживаетя в MPC-HC/BE)",
     "rewindondesync-label" : u"Перемотка при больших рассинхронизациях (настоятельно рекомендуется)",
     "dontslowdownwithme-label" : u"Никогда не замедлять и не перематывать видео другим (функция тестируется)",
     "pausing-title" : u"Приостановка",
@@ -226,6 +233,7 @@ ru = {
     "messages-label" : u"Сообщения",
     "messages-osd-title" : u"Настройки OSD",
     "messages-other-title" : u"Другие настройки отображения",
+    "chat-label" : u"Chat", # TODO: Translate
     "privacy-label" : u"Приватность",
     "privacy-title" : u"Настройки приватности",
     "unpause-title" : u"Если вы стартуете, то:",
@@ -236,12 +244,34 @@ ru = {
     "syncplay-trusteddomains-title": u"Доверенные сайты (стрим-сервисы, видеохостинги, файлы в сети)",
 "addtrusteddomain-menu-label" : u"Добавить {} как доверенный сайт", # Domain
 
+    "chat-title": u"Chat message input",  # TODO: Translate
+    "chatinputenabled-label": u"Enable chat input via mpv (using enter key)",  # TODO: Translate
+    "chatdirectinput-label" : u"Allow instant chat input (bypass having to press enter key to chat)", # TODO: Translate
+    "chatinputfont-label": u"Chat input font",  # TODO: Translate
+    "chatfont-label": u"Set font",  # TODO: Translate
+    "chatcolour-label": u"Set colour",  # TODO: Translate
+    "chatinputposition-label": u"Position of message input area in mpv",  # TODO: Translate
+    "chat-top-option": u"Top",  # TODO: Translate
+    "chat-middle-option": u"Middle",  # TODO: Translate
+    "chat-bottom-option": u"Bottom",  # TODO: Translate
+    "chatoutputheader-label" : u"Chat message output", # TODO: Traslate
+    "chatoutputfont-label": u"Chat output font", # TODO: Translate
+    "chatoutputenabled-label": u"Enable chat output in media player (mpv only for now)", # TODO: Translate
+    "chatoutputposition-label": u"Output mode", # TODO: Translate
+    "chat-chatroom-option": u"Chatroom style", # TODO: Translate
+    "chat-scrolling-option": u"Scrolling style", # TODO: Translate
+
+    "mpv-key-tab-hint": u"[TAB] to toggle access to alphabet row key shortcuts.", # TODO: Translate
+    "mpv-key-hint": u"[ENTER] to send message. [ESC] to escape chat mode.", # TODO: Translate
+    "alphakey-mode-warning-first-line": u"You can temporarily use old mpv bindings with a-z keys.", # TODO: Translate
+    "alphakey-mode-warning-second-line": u"Press [TAB] to return to Syncplay chat mode.", # TODO: Translate
+
     "help-label" : u"Помощь",
     "reset-label" : u"Сброс настроек",
     "run-label" : u"Запустить",
     "storeandrun-label" : u"Сохранить и запустить",
 
-    "contact-label" : u"Есть идея, нашли ошибку или хотите оставить отзыв? Пишите на <a href=\"mailto:dev@syncplay.pl\">dev@syncplay.pl</a>, в <a href=\"https://webchat.freenode.net/?channels=#syncplay\">IRC канал #Syncplay</a> на irc.freenode.net или <a href=\"https://github.com/Uriziel/syncplay/issues\">задавайте вопросы через GitHub</a>. Кроме того, заходите на <a href=\"http://syncplay.pl/\">www.syncplay.pl</a> за инорфмацией, помощью и обновлениями!",
+    "contact-label" : u"Есть идея, нашли ошибку или хотите оставить отзыв? Пишите на <a href=\"mailto:dev@syncplay.pl\">dev@syncplay.pl</a>, в <a href=\"https://webchat.freenode.net/?channels=#syncplay\">IRC канал #Syncplay</a> на irc.freenode.net или <a href=\"https://github.com/Uriziel/syncplay/issues\">задавайте вопросы через GitHub</a>. Кроме того, заходите на <a href=\"http://syncplay.pl/\">www.syncplay.pl</a> за инорфмацией, помощью и обновлениями! NOTE: Chat messages are not encrypted so do not use Syncplay to send sensitive information.", # TODO: Translate last sentence
 
     "joinroom-label" : u"Зайти в комнату",
     "joinroom-menu-label" : u"Зайти в комнату {}",
@@ -284,7 +314,7 @@ ru = {
     "help-menu-label" : u"&Помощь",
     "userguide-menu-label" : u"&Руководство пользователя",
     "update-menu-label" : u"Проверить &обновления",
-    
+
     #About dialog - TODO: Translate
     "about-menu-label": u"&About Syncplay",
     "about-dialog-title": u"About Syncplay",
@@ -322,7 +352,7 @@ ru = {
     "password-tooltip" : u"Пароли нужны для подключения к приватным серверам.",
     "room-tooltip" : u"Комната, в которую Вы попадете сразу после подключения. Синхронизация возможна только между людьми в одной и той же комнате.",
 
-    "executable-path-tooltip" : u"Расположение Вашего видеопроигрывателя (MPC-HC, VLC, mplayer2 или mpv).",
+    "executable-path-tooltip" : u"Расположение Вашего видеопроигрывателя (MPC-HC, MPC-BE, VLC, mplayer2 или mpv).",
     "media-path-tooltip" : u"Расположение видеофайла или потока для просмотра. Обязательно для mplayer2.", # TODO: Confirm translation
     "player-arguments-tooltip" : u"Передавать дополнительные аргументы командной строки этому проигрывателю.",
     "mediasearcdirectories-arguments-tooltip" : u"Папки, где Syncplay будет искать медиа файлы, включая подпапки.",
@@ -334,7 +364,7 @@ ru = {
     "privacy-sendhashed-tooltip" : u"Отправляет хэш-сумму этой информации, делая ее невидимой для других пользователей.",
     "privacy-dontsend-tooltip" : u"Не отправлять эту информацию на сервер. Предоставляет наибольшую приватность.",
     "checkforupdatesautomatically-tooltip" : u"Syncplay будет регулярно заходить на сайт и проверять наличие новых версий.",
-    "slowondesync-tooltip" : u"Временно уменьшить скорость воспроизведения в целях синхронизации с другими зрителями. Не поддерживается в MPC-HC.",
+    "slowondesync-tooltip" : u"Временно уменьшить скорость воспроизведения в целях синхронизации с другими зрителями. Не поддерживается в MPC-HC/BE.",
     "dontslowdownwithme-tooltip" : u"Ваши лаги не будут влиять на других зрителей.",
     "pauseonleave-tooltip" : u"Приостановить воспроизведение, если Вы покинули комнату или кто-то из зрителей отключился от сервера.",
     "readyatstart-tooltip" : u"Отметить Вас готовым к просмотру сразу же (по умолчанию Вы отмечены не готовым)",
@@ -355,6 +385,22 @@ ru = {
     "unpause-ifothersready-tooltip" : u"Когда вы стартуете не готовым, воспроизведение начнется, если остальные готовы.",
     "unpause-ifminusersready-tooltip" : u"Когда вы стартуете не готовым, воспроизведение начнется, если остальные готовы и присутствует достаточное число зрителей.",
     "trusteddomains-arguments-tooltip" : u"Сайты, которые разрешены для автоматического воспроизведения из общего списка воспроизведения.",
+
+    "chatinputenabled-tooltip": u"Enable chat input in mpv (press enter to chat, enter to send, escape to cancel)",# TODO: Translate
+    "chatdirectinput-tooltip" : u"Skip having to press 'enter' to go into chat input mode in mpv. Press TAB in mpv to temporarily disable this feature.", # TODO: Translate
+    "font-label-tooltip": u"Font used for when entering chat messages in mpv. Client-side only, so doesn't affect what other see.",# TODO: Translate
+    "set-input-font-tooltip": u"Font family used for when entering chat messages in mpv. Client-side only, so doesn't affect what other see.",# TODO: Translate
+    "set-input-colour-tooltip": u"Font colour used for when entering chat messages in mpv. Client-side only, so doesn't affect what other see.",# TODO: Translate
+    "chatinputposition-tooltip": u"Location in mpv where chat input text will appear when you press enter and type.",# TODO: Translate
+    "chatinputposition-top-tooltip": u"Place chat input at top of mpv window.",  # TODO: Translate
+    "chatinputposition-middle-tooltip": u"Place chat input in dead centre of mpv window.",  # TODO: Translate
+    "chatinputposition-bottom-tooltip": u"Place chat input at bottom of mpv window.",  # TODO: Translate
+    "chatoutputenabled-tooltip": u"Show chat messages in OSD (if supported by media player).",  # TODO: Translate
+    "font-output-label-tooltip": u"Chat output font.",  # TODO: Translate
+    "set-output-font-tooltip": u"Font used for when displaying chat messages.",  # TODO: Translate
+    "chatoutputmode-tooltip": u"How chat messages are displayed.",  # TODO: Translate
+    "chatoutputmode-chatroom-tooltip": u"Display new lines of chat directly below previous line.",  # TODO: Translate
+    "chatoutputmode-scrolling-tooltip": u"Scroll chat text from right to left.",  # TODO: Translate
 
     "help-tooltip" : u"Открыть Руководство Пользователя на Syncplay.pl.",
     "reset-tooltip" : u"Сбрасывает все настройки Syncplay в начальное состояние.",
@@ -383,7 +429,7 @@ ru = {
     "no-salt-notification" : u"ВНИМАНИЕ: Чтобы сгенерированные сервером пароли операторов комнат работали после перезагрузки сервера, необходимо указать следующий аргумент командной строки при запуске сервера Syncplay: --salt {}", #Salt
 
     # Server arguments
-    "server-argument-description" : u'Решение для синхронного воспроизведения в VLC, MPlayer или MPC-HC через Интернет. Серверная часть',
+    "server-argument-description" : u'Решение для синхронного воспроизведения в VLC, MPlayer или MPC-HC/BE через Интернет. Серверная часть',
     "server-argument-epilog" : u'Если параметр не будет передан, то будет использоваться значение, указанное в _config.',
     "server-port-argument" : u'номер TCP порта сервера',
     "server-password-argument" : u'пароль к серверу',
@@ -392,6 +438,7 @@ ru = {
     "server-disable-ready-argument" : u"отключить статусы готов/не готов",
     "server-motd-argument" : u"путь к файлу, из которого будет извлекаться MOTD-сообщение",
     "server-chat-argument" : "Should chat be disabled?", # TODO: Translate
+    "server-chat-maxchars-argument": u"Maximum number of characters in a chat message (default is {})",  # TODO: Translate
     "server-messed-up-motd-unescaped-placeholders" : u"MOTD-сообщение содержит неэкранированные спец.символы. Все знаки $ должны быть продублированы ($$).",
     "server-messed-up-motd-too-long" : u"MOTD-сообщение слишком длинное: максимальная длина - {} символ(ов), текущая длина - {} символ(ов).",
 
@@ -411,12 +458,14 @@ ru = {
     "cannot-add-unsafe-path-error" : u"Не удалось автоматически переключиться на {}, потому что ссылка не соответствует доверенным сайтам. Её можно включить вручную, дважны кливнув по ссылке в списке воспроизведения. Добавить доверенный сайт можно в выпадающем меню 'Дополнительно' или просто кликнув по ссылке правой кнопкой мыши.", # Filename
     "sharedplaylistenabled-label" : u"Включить общий список воспроизведения",
     "removefromplaylist-menu-label" : u"Удалить",
-    "shuffleplaylist-menuu-label" : u"Перемешать список",
+    "shufflepremaininglaylist-menuu-label" : u"Shuffle remaining playlist", # Was: Перемешать список # TODO: Translate
+    "shuffleentireplaylist-menuu-label" : u"Shuffle entire playlist", # TODO: Translate
     "undoplaylist-menu-label" : u"Отменить последнее действие",
     "addfilestoplaylist-menu-label" : u"Добавить файлы в очередь",
     "addurlstoplaylist-menu-label" : u"Добавить ссылку в очередь",
     "editplaylist-menu-label": u"Редактировать список",
 
+    "open-containing-folder": u"Open folder containing this file", # TODO: Traslate
     "addusersfiletoplaylist-menu-label" : u"Добавить файл {} в список воспроизведения", # item owner indicator
     "addusersstreamstoplaylist-menu-label" : u"Добавить поток {} в список воспроизведения", # item owner indicator
     "openusersstream-menu-label" : u"Открыть поток от {}", # [username]'s

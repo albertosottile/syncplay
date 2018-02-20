@@ -17,6 +17,18 @@ import subprocess
 
 folderSearchEnabled = True
 
+def isWindows():
+    return sys.platform.startswith(constants.OS_WINDOWS)
+
+def isLinux():
+    return sys.platform.startswith(constants.OS_LINUX)
+
+def isMacOS():
+    return sys.platform.startswith(constants.OS_MACOS)
+
+def isBSD():
+    return constants.OS_BSD in sys.platform or sys.platform.startswith(constants.OS_DRAGONFLY)
+
 def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, logger=None):
     """Retry calling the decorated function using an exponential backoff.
 
@@ -42,8 +54,8 @@ def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, logger=None):
             try_one_last_time = True
             while mtries > 1:
                 try:
+                    #try_one_last_time = False
                     return f(*args, **kwargs)
-                    try_one_last_time = False
                     break
                 except ExceptionToCheck, e:
                     if logger:
@@ -118,6 +130,13 @@ def formatSize (bytes, precise=False):
 def isASCII(s):
     return all(ord(c) < 128 for c in s)
 
+def findResourcePath(resourceName):
+    if resourceName == "syncplay.lua":
+        resourcePath = os.path.join(findWorkingDir(), "lua", "intf" , "resources", resourceName)
+    else:
+        resourcePath = os.path.join(findWorkingDir(),"resources", resourceName)
+    return resourcePath
+
 def findWorkingDir():
     frozen = getattr(sys, 'frozen', '')
     if not frozen:
@@ -125,10 +144,28 @@ def findWorkingDir():
     elif frozen in ('dll', 'console_exe', 'windows_exe'):
         path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
     elif frozen in ('macosx_app'):
-    	path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))        
+        path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
     else:
         path = ""
     return path
+
+def getResourcesPath():
+
+    if isWindows():
+        return findWorkingDir() + u"\\resources\\"
+    else:
+        return findWorkingDir() + u"/resources/"
+
+resourcespath = getResourcesPath()
+posixresourcespath = findWorkingDir().replace(u"\\","/") + u"/resources/"
+
+def getDefaultMonospaceFont():
+    if platform.system() == "Windows":
+        return constants.DEFAULT_WINDOWS_MONOSPACE_FONT
+    elif platform.system() == "Darwin":
+        return constants.DEFAULT_OSX_MONOSPACE_FONT
+    else:
+        return constants.FALLBACK_MONOSPACE_FONT
 
 def limitedPowerset(s, minLength):
     return itertools.chain.from_iterable(itertools.combinations(s, r) for r in xrange(len(s), minLength, -1))
@@ -167,19 +204,27 @@ def blackholeStdoutForFrozenWindow():
 
 def truncateText(unicodeText, maxLength):
     try:
-        unicodeText = unicodedata.normalize('NFC', unicodeText)
+        unicodeText = unicodeText.decode('utf-8')
     except:
         pass
     try:
-        maxSaneLength= maxLength*5
-        if len(unicodeText) > maxSaneLength:
-            unicodeText = unicode(unicodeText.encode("utf-8")[:maxSaneLength], "utf-8", errors="ignore")
-        while len(unicodeText) > maxLength:
-            unicodeText = unicode(unicodeText.encode("utf-8")[:-1], "utf-8", errors="ignore")
-        return unicodeText
+        return(unicode(unicodeText.encode("utf-8"), "utf-8", errors="ignore")[:maxLength])
     except:
         pass
     return ""
+
+def splitText(unicodeText, maxLength):
+    try:
+        unicodeText = unicodeText.decode('utf-8')
+    except:
+        pass
+    try:
+        unicodeText = unicode(unicodeText.encode("utf-8"), "utf-8", errors="ignore")
+        unicodeArray = [unicodeText[i:i + maxLength] for i in range(0, len(unicodeText), maxLength)]
+        return(unicodeArray)
+    except:
+        pass
+    return [""]
 
 # Relate to file hashing / difference checking:
 

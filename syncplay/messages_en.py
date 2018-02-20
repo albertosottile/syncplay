@@ -17,23 +17,23 @@ en = {
     "connected-successful-notification" : "Successfully connected to server",
     "retrying-notification" : "%s, Retrying in %d seconds...",  # Seconds
 
-    "rewind-notification" : "Rewinded due to time difference with <{}>",  # User
-    "fastforward-notification" : "Fast-forwarded due to time difference with <{}>",  # User
-    "slowdown-notification" : "Slowing down due to time difference with <{}>",  # User
+    "rewind-notification" : "Rewinded due to time difference with {}",  # User
+    "fastforward-notification" : "Fast-forwarded due to time difference with {}",  # User
+    "slowdown-notification" : "Slowing down due to time difference with {}",  # User
     "revert-notification" : "Reverting speed back to normal",
 
-    "pause-notification" : u"<{}> paused",  # User
-    "unpause-notification" : u"<{}> unpaused",  # User
-    "seek-notification" : u"<{}> jumped from {} to {}",  # User, from time, to time
+    "pause-notification" : u"{} paused",  # User
+    "unpause-notification" : u"{} unpaused",  # User
+    "seek-notification" : u"{} jumped from {} to {}",  # User, from time, to time
 
     "current-offset-notification" : "Current offset: {} seconds",  # Offset
 
     "media-directory-list-updated-notification" : u"Syncplay media directories have been updated.",
 
-    "room-join-notification" : u"<{}> has joined the room: '{}'",  # User
-    "left-notification" : u"<{}> has left",  # User
-    "left-paused-notification" : u"<{}> left, <{}> paused",  # User who left, User who paused
-    "playing-notification" : u"<{}> is playing '{}' ({})",  # User, file, duration
+    "room-join-notification" : u"{} has joined the room: '{}'",  # User
+    "left-notification" : u"{} has left",  # User
+    "left-paused-notification" : u"{} left, {} paused",  # User who left, User who paused
+    "playing-notification" : u"{} is playing '{}' ({})",  # User, file, duration
     "playing-notification/room-addendum" :  u" in room: '{}'",  # Room
 
     "not-all-ready" : u"Not ready: {}", # Usernames
@@ -44,11 +44,11 @@ en = {
     "autoplaying-notification" : u"Auto-playing in {}...",  # Number of seconds until playback will start
 
     "identifying-as-controller-notification" : u"Identifying as room operator with password '{}'...",
-    "failed-to-identify-as-controller-notification" : u"<{}> failed to identify as a room operator.",
-    "authenticated-as-controller-notification" : u"<{}> authenticated as a room operator",
+    "failed-to-identify-as-controller-notification" : u"{} failed to identify as a room operator.",
+    "authenticated-as-controller-notification" : u"{} authenticated as a room operator",
     "created-controlled-room-notification" : u"Created managed room '{}' with password '{}'. Please save this information for future reference!", # RoomName, operatorPassword
 
-    "file-different-notification" : "File you are playing appears to be different from <{}>'s",  # User
+    "file-different-notification" : "File you are playing appears to be different from {}'s",  # User
     "file-differences-notification" : u"Your file differs in the following way(s): {}", # Differences
     "room-file-differences" : u"File differences: {}", # File differences (filename, size, and/or duration)
     "file-difference-filename" : u"name",
@@ -107,9 +107,10 @@ en = {
     "server-timeout-error" : "Connection with server timed out",
     "mpc-slave-error" : "Unable to start MPC in slave mode!",
     "mpc-version-insufficient-error" : "MPC version not sufficient, please use `mpc-hc` >= `{}`",
+    "mpc-be-version-insufficient-error" : "MPC version not sufficient, please use `mpc-be` >= `{}`",
     "mpv-version-error" : "Syncplay is not compatible with this version of mpv. Please use a different version of mpv (e.g. Git HEAD).",
     "player-file-open-error" : "Player failed opening file",
-    "player-path-error" : "Player path is not set properly. Supported players are: mpv, VLC, MPC-HC and mplayer2",
+    "player-path-error" : "Player path is not set properly. Supported players are: mpv, VLC, MPC-HC, MPC-BE and mplayer2",
     "hostname-empty-error" : "Hostname can't be empty",
     "empty-error" : "{} can't be empty",  # Configuration
     "media-player-error": "Media player error: \"{}\"",  # Error line
@@ -119,20 +120,25 @@ en = {
 
     "unable-to-start-client-error" : "Unable to start client",
 
-    "player-path-config-error": "Player path is not set properly. Supported players are: mpv, VLC, MPC-HC and mplayer2.",
+    "player-path-config-error": "Player path is not set properly. Supported players are: mpv, VLC, MPC-HC, MPC-BE and mplayer2.",
     "no-file-path-config-error" :"File must be selected before starting your player",
     "no-hostname-config-error": "Hostname can't be empty",
     "invalid-port-config-error" : "Port must be valid",
     "empty-value-config-error" : "{} can't be empty", # Config option
 
     "not-json-error" : "Not a json encoded string\n",
-    "hello-arguments-error" : "Not enough Hello arguments\n",
+    "hello-arguments-error" : "Not enough Hello arguments\n", # DO NOT TRANSLATE
     "version-mismatch-error" : "Mismatch between versions of client and server\n",
     "vlc-failed-connection": "Failed to connect to VLC. If you have not installed syncplay.lua and are using the latest verion of VLC then please refer to http://syncplay.pl/LUA/ for instructions.",
     "vlc-failed-noscript": "VLC has reported that the syncplay.lua interface script has not been installed. Please refer to http://syncplay.pl/LUA/ for instructions.",
     "vlc-failed-versioncheck": "This version of VLC is not supported by Syncplay.",
 
-    "not-supported-by-server-error" : "This feature is not supported by the server. The feature requires a server running Syncplay {}+, but the server is running Syncplay {}.", #minVersion, serverVersion
+    "feature-sharedPlaylists" : u"shared playlists", # used for not-supported-by-server-error
+    "feature-chat" : u"chat", # used for not-supported-by-server-error
+    "feature-readiness" : u"readiness", # used for not-supported-by-server-error
+    "feature-managedRooms" : u"managed rooms", # used for not-supported-by-server-error
+
+    "not-supported-by-server-error" : u"The {} feature is not supported by this server..", #feature
     "shared-playlists-not-supported-by-server-error" : "The shared playlists feature may not be supported by the server. To ensure that it works correctly requires a server running Syncplay  {}+, but the server is running Syncplay {}.", #minVersion, serverVersion
     "shared-playlists-disabled-by-server-error" : "The shared playlist feature has been disabled in the server configuration. To use this feature you will need to connect to a different server.",
 
@@ -149,7 +155,7 @@ en = {
     "failed-to-load-server-list-error" : u"Failed to load public server list. Please visit http://www.syncplay.pl/ in your browser.",
 
     # Client arguments
-    "argument-description" : 'Solution to synchronize playback of multiple MPlayer and MPC-HC instances over the network.',
+    "argument-description" : 'Solution to synchronize playback of multiple media player instances over the network.',
     "argument-epilog" : 'If no options supplied _config values will be used',
     "nogui-argument" : 'show no GUI',
     "host-argument" : 'server\'s address',
@@ -193,7 +199,7 @@ en = {
     "filename-privacy-label" : "Filename information:",
     "filesize-privacy-label" : "File size information:",
     "checkforupdatesautomatically-label" : "Check for Syncplay updates automatically",
-    "slowondesync-label" : "Slow down on minor desync (not supported on MPC-HC)",
+    "slowondesync-label" : "Slow down on minor desync (not supported on MPC-HC/BE)",
     "rewindondesync-label" : "Rewind on major desync (recommended)",
     "fastforwardondesync-label" : "Fast-forward if lagging behind (recommended)",
     "dontslowdownwithme-label" : "Never slow down or rewind others (experimental)",
@@ -224,6 +230,7 @@ en = {
     "messages-label" : "Messages",
     "messages-osd-title" : "On-screen Display settings",
     "messages-other-title" : "Other display settings",
+    "chat-label" : u"Chat",
     "privacy-label" : "Privacy", # Currently unused, but will be brought back if more space is needed in Misc tab
     "privacy-title" : "Privacy settings",
     "unpause-title" : u"If you press play, set as ready and:",
@@ -233,12 +240,34 @@ en = {
     "unpause-always" : u"Always unpause",
     "syncplay-trusteddomains-title": u"Trusted domains (for streaming services and hosted content)",
 
+    "chat-title" : u"Chat message input",
+    "chatinputenabled-label" : u"Enable chat input via mpv",
+    "chatdirectinput-label" : u"Allow instant chat input (bypass having to press enter key to chat)",
+    "chatinputfont-label" : u"Chat input font",
+    "chatfont-label" : u"Set font",
+    "chatcolour-label" : u"Set colour",
+    "chatinputposition-label" : u"Position of message input area in mpv",
+    "chat-top-option" : u"Top",
+    "chat-middle-option" : u"Middle",
+    "chat-bottom-option" : u"Bottom",
+    "chatoutputheader-label" : u"Chat message output",
+    "chatoutputfont-label": u"Chat output font",
+    "chatoutputenabled-label": u"Enable chat output in media player (mpv only for now)",
+    "chatoutputposition-label": u"Output mode",
+    "chat-chatroom-option": u"Chatroom style",
+    "chat-scrolling-option": u"Scrolling style",
+
+    "mpv-key-tab-hint": u"[TAB] to toggle access to alphabet row key shortcuts.",
+    "mpv-key-hint": u"[ENTER] to send message. [ESC] to escape chat mode.",
+    "alphakey-mode-warning-first-line": u"You can temporarily use old mpv bindings with a-z keys.",
+    "alphakey-mode-warning-second-line": u"Press [TAB] to return to Syncplay chat mode.",
+
     "help-label" : "Help",
     "reset-label" : "Restore defaults",
     "run-label" : "Run Syncplay",
     "storeandrun-label" : "Store configuration and run Syncplay",
 
-    "contact-label" : "Feel free to e-mail <a href=\"mailto:dev@syncplay.pl\"><nobr>dev@syncplay.pl</nobr></a>, chat via the <a href=\"https://webchat.freenode.net/?channels=#syncplay\"><nobr>#Syncplay IRC channel</nobr></a> on irc.freenode.net, <a href=\"https://github.com/Uriziel/syncplay/issues\"><nobr>raise an issue</nobr></a> via GitHub, <a href=\"https://www.facebook.com/SyncplaySoftware\"><nobr>like us on Facebook</nobr></a>, <a href=\"https://twitter.com/Syncplay/\"><nobr>follow us on Twitter</nobr></a>, or visit <a href=\"http://syncplay.pl/\"><nobr>http://syncplay.pl/</nobr></a>",
+    "contact-label" : "Feel free to e-mail <a href=\"mailto:dev@syncplay.pl\"><nobr>dev@syncplay.pl</nobr></a>, chat via the <a href=\"https://webchat.freenode.net/?channels=#syncplay\"><nobr>#Syncplay IRC channel</nobr></a> on irc.freenode.net, <a href=\"https://github.com/Uriziel/syncplay/issues\"><nobr>raise an issue</nobr></a> via GitHub, <a href=\"https://www.facebook.com/SyncplaySoftware\"><nobr>like us on Facebook</nobr></a>, <a href=\"https://twitter.com/Syncplay/\"><nobr>follow us on Twitter</nobr></a>, or visit <a href=\"http://syncplay.pl/\"><nobr>http://syncplay.pl/</nobr></a>. NOTE: Chat messages are not encrypted so do not use Syncplay to send sensitive information.",
 
     "joinroom-label" : "Join room",
     "joinroom-menu-label" : u"Join room {}",
@@ -282,7 +311,7 @@ en = {
     "help-menu-label" : "&Help",
     "userguide-menu-label" : "Open user &guide",
     "update-menu-label" : "Check for &update",
-    
+
     #About dialog
     "about-menu-label": u"&About Syncplay",
     "about-dialog-title": u"About Syncplay",
@@ -320,7 +349,7 @@ en = {
     "password-tooltip" : "Passwords are only needed for connecting to private servers.",
     "room-tooltip" : "Room to join upon connection can be almost anything, but you will only be synchronised with people in the same room.",
 
-    "executable-path-tooltip" : "Location of your chosen supported media player (mpv, VLC, MPC-HC or mplayer2).",
+    "executable-path-tooltip" : "Location of your chosen supported media player (mpv, VLC, MPC-HC/BE or mplayer2).",
     "media-path-tooltip" : "Location of video or stream to be opened. Necessary for mplayer2.",
     "player-arguments-tooltip" : "Additional command line arguments / switches to pass on to this media player.",
     "mediasearcdirectories-arguments-tooltip" : u"Directories where Syncplay will search for media files, e.g. when you are using the click to switch feature. Syncplay will look recursively through sub-folders.",
@@ -332,7 +361,7 @@ en = {
     "privacy-sendhashed-tooltip" : "Send a hashed version of the information, making it less visible to other clients.",
     "privacy-dontsend-tooltip" : "Do not send this information to the server. This provides for maximum privacy.",
     "checkforupdatesautomatically-tooltip" : "Regularly check with the Syncplay website to see whether a new version of Syncplay is available.",
-    "slowondesync-tooltip" : "Reduce playback rate temporarily when needed to bring you back in sync with other viewers. Not supported on MPC-HC.",
+    "slowondesync-tooltip" : "Reduce playback rate temporarily when needed to bring you back in sync with other viewers. Not supported on MPC-HC/BE.",
     "dontslowdownwithme-tooltip" : "Means others do not get slowed down or rewinded if your playback is lagging. Useful for room operators.",
     "pauseonleave-tooltip" : "Pause playback if you get disconnected or someone leaves from your room.",
     "readyatstart-tooltip" : "Set yourself as 'ready' at start (otherwise you are set as 'not ready' until you change your readiness state)",
@@ -353,6 +382,22 @@ en = {
     "unpause-ifothersready-tooltip" : u"If you press unpause when not ready, it will only upause if others are ready.",
     "unpause-ifminusersready-tooltip" : u"If you press unpause when not ready, it will only unpause if others are ready and minimum users threshold is met.",
     "trusteddomains-arguments-tooltip" : u"Domains that it is okay for Syncplay to automatically switch to when shared playlists is enabled.",
+
+    "chatinputenabled-tooltip" : u"Enable chat input in mpv (press enter to chat, enter to send, escape to cancel)",
+    "chatdirectinput-tooltip" : u"Skip having to press 'enter' to go into chat input mode in mpv. Press TAB in mpv to temporarily disable this feature.",
+    "font-label-tooltip" : u"Font used for when entering chat messages in mpv. Client-side only, so doesn't affect what other see.",
+    "set-input-font-tooltip" : u"Font family used for when entering chat messages in mpv. Client-side only, so doesn't affect what other see.",
+    "set-input-colour-tooltip" : u"Font colour used for when entering chat messages in mpv. Client-side only, so doesn't affect what other see.",
+    "chatinputposition-tooltip" : u"Location in mpv where chat input text will appear when you press enter and type.",
+    "chatinputposition-top-tooltip" : u"Place chat input at top of mpv window.",
+    "chatinputposition-middle-tooltip" : u"Place chat input in dead centre of mpv window.",
+    "chatinputposition-bottom-tooltip" : u"Place chat input at bottom of mpv window.",
+    "chatoutputenabled-tooltip": u"Show chat messages in OSD (if supported by media player).",
+    "font-output-label-tooltip": u"Chat output font.",
+    "set-output-font-tooltip": u"Font used for when displaying chat messages.",
+    "chatoutputmode-tooltip": u"How chat messages are displayed.",
+    "chatoutputmode-chatroom-tooltip": u"Display new lines of chat directly below previous line.",
+    "chatoutputmode-scrolling-tooltip": u"Scroll chat text from right to left.",
 
     "help-tooltip" : "Opens the Syncplay.pl user guide.",
     "reset-tooltip" : "Reset all settings to the default configuration.",
@@ -382,7 +427,7 @@ en = {
 
 
     # Server arguments
-    "server-argument-description" : 'Solution to synchronize playback of multiple MPlayer and MPC-HC instances over the network. Server instance',
+    "server-argument-description" : 'Solution to synchronize playback of multiple MPlayer and MPC-HC/BE instances over the network. Server instance',
     "server-argument-epilog" : 'If no options supplied _config values will be used',
     "server-port-argument" : 'server TCP port',
     "server-password-argument" : 'server password',
@@ -391,6 +436,7 @@ en = {
     "server-disable-ready-argument" : u"disable readiness feature",
     "server-motd-argument": "path to file from which motd will be fetched",
     "server-chat-argument" : "Should chat be disabled?",
+    "server-chat-maxchars-argument" : u"Maximum number of characters in a chat message (default is {})", # Default number of characters
     "server-messed-up-motd-unescaped-placeholders": "Message of the Day has unescaped placeholders. All $ signs should be doubled ($$).",
     "server-messed-up-motd-too-long": u"Message of the Day is too long - maximum of {} chars, {} given.",
 
@@ -401,7 +447,7 @@ en = {
     "client-drop-server-error" : u"Client drop: {} -- {}",  # host, error
     "password-required-server-error" : "Password required",
     "wrong-password-server-error" : "Wrong password supplied",
-    "hello-server-error" : "Not enough Hello arguments",
+    "hello-server-error" : "Not enough Hello arguments", #DO NOT TRANSLATE
 
     # Playlists
     "playlist-selection-changed-notification" :  u"{} changed the playlist selection", # Username
@@ -411,7 +457,8 @@ en = {
     "cannot-add-unsafe-path-error" : u"Could not automatically load {} because it is not on a trusted domain. You can switch to the URL manually by double clicking it in the playlist, and add trusted domains via File->Advanced->Set Trusted Domains. If you right click on a URL then you can add its domain as a trusted domain via the context menu.", # Filename
     "sharedplaylistenabled-label" : u"Enable shared playlists",
     "removefromplaylist-menu-label" : u"Remove from playlist",
-    "shuffleplaylist-menuu-label" : u"Shuffle playlist",
+    "shuffleremainingplaylist-menu-label" : u"Shuffle remaining playlist",
+    "shuffleentireplaylist-menuu-label" : u"Shuffle entire playlist",
     "undoplaylist-menu-label" : u"Undo last change to playlist",
     "addfilestoplaylist-menu-label" : u"Add file(s) to bottom of playlist",
     "addurlstoplaylist-menu-label" : u"Add URL(s) to bottom of playlist",

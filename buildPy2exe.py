@@ -5,7 +5,7 @@
 
 ) If you get the error "ImportError: No module named zope.interface" then add an empty __init__.py file to the PYTHONDIR/Lib/site-packages/zope directory
 
-2) It is expected that you will have NSIS 3  NSIS from http://nsis.sourceforge.net installed to: C:\Program Files (x86)\NSIS\
+2) It is expected that you will have NSIS 3 NSIS from http://nsis.sourceforge.net installed.
 
 '''
 
@@ -31,8 +31,21 @@ if missingStrings is not None and missingStrings is not "":
     import warnings
     warnings.warn("MISSING/UNUSED STRINGS DETECTED:\n{}".format(missingStrings))
 
-p = "C:\\Program Files (x86)\\NSIS\\makensis.exe" #TODO: how to move that into proper place, huh
-NSIS_COMPILE = p if os.path.isfile(p) else "makensis.exe"
+def get_nsis_path():
+    bin_name = "makensis.exe"
+    from _winreg import HKEY_LOCAL_MACHINE as HKLM
+    from _winreg import KEY_READ, KEY_WOW64_32KEY, OpenKey, QueryValueEx
+
+    try:
+        nsisreg = OpenKey(HKLM, "Software\\NSIS", 0, KEY_READ | KEY_WOW64_32KEY)
+        if QueryValueEx(nsisreg, "VersionMajor")[0] >= 3:
+            return "{}\\{}".format(QueryValueEx(nsisreg, "")[0], bin_name)
+        else:
+            raise Exception("You must install NSIS 3 or later.")
+    except WindowsError:
+        return bin_name
+NSIS_COMPILE = get_nsis_path()
+
 OUT_DIR = "syncplay_v{}".format(syncplay.version)
 SETUP_SCRIPT_PATH = "syncplay_setup.nsi"
 NSIS_SCRIPT_TEMPLATE = r"""
@@ -44,11 +57,12 @@ NSIS_SCRIPT_TEMPLATE = r"""
   LoadLanguageFile "$${NSISDIR}\Contrib\Language files\Polish.nlf"
   LoadLanguageFile "$${NSISDIR}\Contrib\Language files\Russian.nlf"
   LoadLanguageFile "$${NSISDIR}\Contrib\Language files\German.nlf"
+  LoadLanguageFile "$${NSISDIR}\Contrib\Language files\Italian.nlf"
 
   Unicode true
 
   Name "Syncplay $version"
-  OutFile "Syncplay $version Setup.exe"
+  OutFile "Syncplay-$version-Setup.exe"
   InstallDir $$PROGRAMFILES\Syncplay
   RequestExecutionLevel admin
   XPStyle on
@@ -70,6 +84,11 @@ NSIS_SCRIPT_TEMPLATE = r"""
   VIAddVersionKey /LANG=$${LANG_RUSSIAN} "FileVersion" "$version.0"
   VIAddVersionKey /LANG=$${LANG_RUSSIAN} "LegalCopyright" "Syncplay"
   VIAddVersionKey /LANG=$${LANG_RUSSIAN} "FileDescription" "Syncplay"
+  
+  VIAddVersionKey /LANG=$${LANG_ITALIAN} "ProductName" "Syncplay"
+  VIAddVersionKey /LANG=$${LANG_ITALIAN} "FileVersion" "$version.0"
+  VIAddVersionKey /LANG=$${LANG_ITALIAN} "LegalCopyright" "Syncplay"
+  VIAddVersionKey /LANG=$${LANG_ITALIAN} "FileDescription" "Syncplay"
 
   LangString ^SyncplayLanguage $${LANG_ENGLISH} "en"
   LangString ^Associate $${LANG_ENGLISH} "Associate Syncplay with multimedia files."
@@ -113,6 +132,17 @@ NSIS_SCRIPT_TEMPLATE = r"""
   LangString ^QuickLaunchBar $${LANG_GERMAN} "Schnellstartleiste"
   LangString ^AutomaticUpdates $${LANG_GERMAN} "Automatisch nach Updates suchen";
   LangString ^UninstConfig $${LANG_GERMAN} "Konfigurationsdatei löschen."
+  
+  LangString ^SyncplayLanguage $${LANG_ITALIAN} "it"
+  LangString ^Associate $${LANG_ITALIAN} "Associa Syncplay con i file multimediali."
+  LangString ^VLC $${LANG_ITALIAN} "Installa l'interfaccia di Syncplay per VLC 2+"
+  LangString ^BrowseVLCBtn $${LANG_ITALIAN} "Cartella di VLC"
+  LangString ^Shortcut $${LANG_ITALIAN} "Crea i collegamenti nei percorsi seguenti:"
+  LangString ^StartMenu $${LANG_ITALIAN} "Menu Start"
+  LangString ^Desktop $${LANG_ITALIAN} "Desktop"
+  LangString ^QuickLaunchBar $${LANG_ITALIAN} "Barra di avvio rapido"
+  LangString ^AutomaticUpdates $${LANG_ITALIAN} "Controllo automatico degli aggiornamenti"
+  LangString ^UninstConfig $${LANG_ITALIAN} "Cancella i file di configurazione."
 
   ; Remove text to save space
   LangString ^ClickInstall $${LANG_GERMAN} " "
@@ -220,6 +250,8 @@ NSIS_SCRIPT_TEMPLATE = r"""
     Push Русский
     Push $${LANG_GERMAN}
     Push Deutsch
+	Push $${LANG_ITALIAN}
+    Push Italiano
     Push A ; A means auto count languages
     LangDLL::LangDialog "Language Selection" "Please select the language of Syncplay and the installer"
     Pop $$LANGUAGE
@@ -651,12 +683,15 @@ guiIcons = ['resources/accept.png', 'resources/arrow_undo.png', 'resources/clock
      'resources/folder_explore.png', 'resources/help.png', 'resources/table_refresh.png',
      'resources/timeline_marker.png','resources/control_play_blue.png',
      'resources/mpc-hc.png','resources/mpc-hc64.png','resources/mplayer.png',
+     'resources/mpc-be.png',
      'resources/mpv.png','resources/vlc.png', 'resources/house.png', 'resources/film_link.png',
      'resources/eye.png', 'resources/comments.png', 'resources/cog_delete.png', 'resources/chevrons_right.png',
      'resources/user_key.png', 'resources/lock.png', 'resources/key_go.png', 'resources/page_white_key.png',
      'resources/tick.png', 'resources/lock_open.png', 'resources/empty_checkbox.png', 'resources/tick_checkbox.png',
      'resources/world_explore.png', 'resources/application_get.png', 'resources/cog.png', 'resources/arrow_switch.png',
      'resources/film_go.png', 'resources/world_go.png', 'resources/arrow_refresh.png', 'resources/bullet_right_grey.png',
+     'resources/user_comment.png',
+     'resources/error.png',
      'resources/film_folder_edit.png',
      'resources/film_edit.png',
      'resources/folder_film.png',
@@ -665,7 +700,7 @@ guiIcons = ['resources/accept.png', 'resources/arrow_undo.png', 'resources/clock
      'resources/email_go.png',
      'resources/world_add.png', 'resources/film_add.png', 'resources/delete.png', 'resources/spinner.mng'
     ]
-resources = ["resources/icon.ico", "resources/syncplay.png", "resources/license.rtf", "resources/third-party-notices.rtf"]
+resources = ["resources/icon.ico", "resources/syncplay.png", "resources/syncplayintf.lua", "resources/license.rtf", "resources/third-party-notices.rtf"]
 resources.extend(guiIcons)
 intf_resources = ["resources/lua/intf/syncplay.lua"]
 

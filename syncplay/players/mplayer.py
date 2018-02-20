@@ -1,3 +1,4 @@
+# coding:utf8
 import subprocess
 import re
 import threading
@@ -6,11 +7,13 @@ from syncplay.players.basePlayer import BasePlayer
 from syncplay import constants, utils
 from syncplay.messages import getMessage
 import os, sys
+from syncplay.utils import isWindows
 
 class MplayerPlayer(BasePlayer):
     speedSupported = True
     customOpenDialog = False
-    secondaryOSDSupported = False
+    alertOSDSupported = False
+    chatOSDSupported = False
     osdMessageSeparator = "; "
 
     RE_ANSWER = re.compile(constants.MPLAYER_ANSWER_REGEX)
@@ -87,8 +90,15 @@ class MplayerPlayer(BasePlayer):
     def _getProperty(self, property_):
         self._listener.sendLine("get_property {}".format(property_))
 
-    def displayMessage(self, message, duration=(constants.OSD_DURATION * 1000), secondaryOSD=False):
-        self._listener.sendLine(u'{} "{!s}" {} {}'.format(self.OSD_QUERY, self._stripNewlines(message), duration, constants.MPLAYER_OSD_LEVEL).encode('utf-8'))
+    def displayMessage(self, message, duration=(constants.OSD_DURATION * 1000), OSDType=constants.OSD_NOTIFICATION, mood=constants.MESSAGE_NEUTRAL):
+        messageString = self._sanitizeText(message.replace("\\n", "<NEWLINE>")).replace("<NEWLINE>", "\\n")
+        self._listener.sendLine(u'{} "{!s}" {} {}'.format(self.OSD_QUERY, messageString, duration, constants.MPLAYER_OSD_LEVEL).encode('utf-8'))
+
+    def displayChatMessage(self, username, message):
+        messageString = u"<{}> {}".format(username, message)
+        messageString = self._sanitizeText(messageString.replace("\\n", "<NEWLINE>")).replace("<NEWLINE>", "\\n")
+        duration = int(constants.OSD_DURATION * 1000)
+        self._listener.sendLine(u'{} "{!s}" {} {}'.format(self.OSD_QUERY, messageString, duration, constants.MPLAYER_OSD_LEVEL).encode('utf-8'))
 
     def setSpeed(self, value):
         self._setProperty('speed', "{:.2f}".format(value))
@@ -103,6 +113,9 @@ class MplayerPlayer(BasePlayer):
         if self._paused != self._client.getGlobalPaused():
             self.setPaused(self._client.getGlobalPaused())
         self.setPosition(self._client.getGlobalPosition())
+
+    def setFeatures(self, featureList):
+        pass
 
     def setPosition(self, value):
         self._position = max(value,0)
@@ -129,9 +142,16 @@ class MplayerPlayer(BasePlayer):
     def _getPosition(self):
         self._getProperty(self.POSITION_QUERY)
 
-    def _stripNewlines(self, text):
+    def _sanitizeText(self, text):
         text = text.replace("\r", "")
         text = text.replace("\n", "")
+        text = text.replace("\\\"", "<SYNCPLAY_QUOTE>")
+        text = text.replace("\"", "<SYNCPLAY_QUOTE>")
+        text = text.replace("%", "%%")
+        text = text.replace("\\", "\\\\")
+        text = text.replace("{", "\\\\{")
+        text = text.replace("}", "\\\\}")
+        text = text.replace("<SYNCPLAY_QUOTE>","\\\"")
         return text
 
     def _quoteArg(self, arg):
@@ -157,6 +177,8 @@ class MplayerPlayer(BasePlayer):
     def lineReceived(self, line):
         if line:
             self._client.ui.showDebugMessage("player << {}".format(line))
+            line = line.replace("[cplayer] ", "")  # -v workaround
+            line = line.replace("[term-msg] ", "")  # -v workaround
             line = line.replace("   cplayer: ","")  # --msg-module workaround
             line = line.replace("  term-msg: ", "")
         if "Failed to get value of property" in line or "=(unavailable)" in line or line == "ANS_filename=" or line == "ANS_length=" or line == "ANS_path=":
@@ -182,7 +204,10 @@ class MplayerPlayer(BasePlayer):
             self._storePauseState(bool(value == 'yes'))
             self._pausedAsk.set()
         elif name == "length":
-            self._duration = float(value)
+            try:
+                self._duration = float(value)
+            except:
+                self._duration = 0
             self._durationAsk.set()
         elif name == "path":
             self._filepath = value
@@ -273,6 +298,9 @@ class MplayerPlayer(BasePlayer):
             self.lastSendTime = None
             self.lastNotReadyTime = None
             self.__playerController = playerController
+            if not self.__playerController._client._config["chatOutputEnabled"]:
+                self.__playerController.alertOSDSupported = False
+                self.__playerController.chatOSDSupported = False
             if self.__playerController.getPlayerPathErrors(playerPath,filePath):
                 raise ValueError()
             if filePath and '://' not in filePath:
@@ -282,7 +310,7 @@ class MplayerPlayer(BasePlayer):
 
             call = [playerPath]
             if filePath:
-                if sys.platform.startswith('win') and not utils.isASCII(filePath):
+                if isWindows() and not utils.isASCII(filePath):
                     self.__playerController.delayedFilePath = filePath
                     filePath = None
                 else:
@@ -328,6 +356,18 @@ class MplayerPlayer(BasePlayer):
                 self.__playerController.lineReceived(line)
             self.__playerController.drop()
 
+        def sendChat(self, message):
+            if message:
+                if message[:1] == "/" and message <> "/":
+                    command = message[1:]
+                    if command and command[:1] == "/":
+                        message = message[1:]
+                    else:
+                        self.__playerController.reactor.callFromThread(self.__playerController._client.ui.executeCommand,
+                                                                       command)
+                        return
+                self.__playerController.reactor.callFromThread(self.__playerController._client.sendChat, message)
+
         def isReadyForSend(self):
             self.checkForReadinessOverride()
             return self.readyToSend
@@ -360,7 +400,12 @@ class MplayerPlayer(BasePlayer):
                                 for itemID, deletionCandidate in enumerate(self.sendQueue):
                                     if deletionCandidate.startswith(command):
                                         self.__playerController._client.ui.showDebugMessage(u"<mpv> Remove duplicate (supersede): {}".format(self.sendQueue[itemID]))
-                                        self.sendQueue.remove(self.sendQueue[itemID])
+                                        try:
+                                            self.sendQueue.remove(self.sendQueue[itemID])
+                                        except UnicodeWarning:
+                                            self.__playerController._client.ui.showDebugMessage(u"<mpv> Unicode mismatch occured when trying to remove duplicate")
+                                            # TODO: Prevent this from being triggered
+                                            pass
                                         break
                             break
                     if constants.MPV_REMOVE_BOTH_IF_DUPLICATE_COMMANDS:
