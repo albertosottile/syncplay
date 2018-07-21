@@ -4,16 +4,17 @@
         "repo": "Syncplay",
         "subject": "alby128"
     },
-
     "version": {
-        "name": "test"
+        "name": "v1.5.6"
     },
-
-    "files":
-        [
-        {"includePattern": "dist_dmg/(.*)", "uploadPattern": "$1", 
-           "matrixParams": {
-           "override": 1 }}
-	    ],
+    "files": [
+        {
+            "includePattern": "dist_dmg/(.*)",
+            "uploadPattern": "$1",
+            "matrixParams": {
+                "override": 1
+            }
+        }
+    ],
     "publish": true
 }
