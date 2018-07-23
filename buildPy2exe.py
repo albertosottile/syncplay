@@ -668,7 +668,6 @@ class NSISScript(object):
                 delete.append('DELETE "$INSTDIR\\{}\\{}"'.format(dir_, file_))
             delete.append('RMdir "$INSTDIR\\{}"'.format(file_))    
         return "\n".join(delete)
-<<<<<<< HEAD
 
 def pruneUnneededLibraries():
     from pathlib import Path
@@ -708,9 +707,6 @@ def copyQtPlugins(paths):
         os.makedirs(destDir, exist_ok=True)
         shutil.copy(source, dest)
 
-=======
-    
->>>>>>> parent of 995f232... Merge pull request #192 from xNinjaKittyx/master
 class build_installer(py2exe):
     def run(self):
         py2exe.run(self)
@@ -724,7 +720,6 @@ class build_installer(py2exe):
         script.compile()
         print("*** DONE ***")
 
-<<<<<<< HEAD
 guiIcons = [
     'resources/accept.png', 'resources/arrow_undo.png', 'resources/clock_go.png',
     'resources/control_pause_blue.png', 'resources/cross.png', 'resources/door_in.png',
@@ -755,31 +750,6 @@ resources = [
     "resources/license.rtf",
     "resources/third-party-notices.rtf"
 ]
-=======
-guiIcons = ['resources/accept.png', 'resources/arrow_undo.png', 'resources/clock_go.png',
-     'resources/control_pause_blue.png', 'resources/cross.png', 'resources/door_in.png',
-     'resources/folder_explore.png', 'resources/help.png', 'resources/table_refresh.png',
-     'resources/timeline_marker.png','resources/control_play_blue.png',
-     'resources/mpc-hc.png','resources/mpc-hc64.png','resources/mplayer.png',
-     'resources/mpc-be.png',
-     'resources/mpv.png','resources/vlc.png', 'resources/house.png', 'resources/film_link.png',
-     'resources/eye.png', 'resources/comments.png', 'resources/cog_delete.png', 'resources/chevrons_right.png',
-     'resources/user_key.png', 'resources/lock.png', 'resources/key_go.png', 'resources/page_white_key.png',
-     'resources/tick.png', 'resources/lock_open.png', 'resources/empty_checkbox.png', 'resources/tick_checkbox.png',
-     'resources/world_explore.png', 'resources/application_get.png', 'resources/cog.png', 'resources/arrow_switch.png',
-     'resources/film_go.png', 'resources/world_go.png', 'resources/arrow_refresh.png', 'resources/bullet_right_grey.png',
-     'resources/user_comment.png',
-     'resources/error.png',
-     'resources/film_folder_edit.png',
-     'resources/film_edit.png',
-     'resources/folder_film.png',
-     'resources/shield_edit.png',
-     'resources/shield_add.png',
-     'resources/email_go.png',
-     'resources/world_add.png', 'resources/film_add.png', 'resources/delete.png', 'resources/spinner.mng'
-    ]
-resources = ["resources/icon.ico", "resources/syncplay.png", "resources/syncplayintf.lua", "resources/license.rtf", "resources/third-party-notices.rtf"]
->>>>>>> parent of 995f232... Merge pull request #192 from xNinjaKittyx/master
 resources.extend(guiIcons)
 intf_resources = ["resources/lua/intf/syncplay.lua"]
 
@@ -799,7 +769,7 @@ info = dict(
     console=['syncplayServer.py'],
     # *** If you wish to make the Syncplay client use console mode (for --no-gui to work) then comment out the above two lines and uncomment the following line:
     # console=['syncplayServer.py', {"script":"syncplayClient.py", "icon_resources":[(1, "resources\\icon.ico")], 'dest_base': "Syncplay"}],
-<<<<<<< HEAD
+
     options={
         'py2exe': {
             'dist_dir': OUT_DIR,
@@ -814,21 +784,6 @@ info = dict(
     data_files=[("resources", resources), ("resources/lua/intf", intf_resources)],
     zipfile="lib/libsync",
     cmdclass={"py2exe": build_installer},
-=======
-    options={'py2exe': {
-                         'dist_dir': OUT_DIR,
-                         'packages': 'PySide.QtUiTools',
-                         'includes': 'twisted, sys, encodings, datetime, os, time, math, PySide, liburl, ast, unicodedata, _ssl',
-                         'excludes': 'venv, doctest, pdb, unittest, win32clipboard, win32file, win32pdh, win32security, win32trace, win32ui, winxpgui, win32pipe, win32process, Tkinter',
-                         'dll_excludes': 'msvcr71.dll, MSVCP90.dll, POWRPROF.dll',
-                         'optimize': 2,
-                         'compressed': 1
-                         }
-             },
-    data_files = [("resources", resources),("resources/lua/intf", intf_resources)],
-    zipfile = "lib/libsync",
-    cmdclass = {"py2exe": build_installer},               
->>>>>>> parent of 995f232... Merge pull request #192 from xNinjaKittyx/master
 )
 
 sys.argv.extend(['py2exe', '-p win32com ', '-i twisted.web.resource', '-p PySide2'])
