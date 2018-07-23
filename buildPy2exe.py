@@ -717,12 +717,15 @@ def copyQtPlugins(paths):
 class build_installer(py2exe):
     def run(self):
         py2exe.run(self)
+        print('*** deleting unnecessary libraries and modules ***')
+        pruneUnneededLibraries()
+        print('*** copying qt plugins ***')
+        copyQtPlugins(qt_plugins)
         script = NSISScript()
         script.create()
-        print("*** compiling the NSIS setup script***")
+        print("*** compiling the NSIS setup script ***")
         script.compile()
         print("*** DONE ***")
-
 
 guiIcons = [
     'resources/accept.png', 'resources/arrow_undo.png', 'resources/clock_go.png',
@@ -756,6 +759,8 @@ resources = [
 ]
 resources.extend(guiIcons)
 intf_resources = ["resources/lua/intf/syncplay.lua"]
+
+qt_plugins = ['platforms\\qwindows.dll', 'styles\\qwindowsvistastyle.dll']
 
 common_info = dict(
     name='Syncplay',
@@ -793,5 +798,3 @@ info = dict(
 
 sys.argv.extend(['py2exe', '-p win32com ', '-i twisted.web.resource', '-p PySide2'])
 setup(**info)
-pruneUnneededLibraries()
-copyQtPlugins(['platforms\\qwindows.dll', 'styles\\qwindowsvistastyle.dll'])

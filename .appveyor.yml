@@ -30,6 +30,7 @@ install:
   - python buildPy2exe.py
   - type nul > syncplay_v%ver%\syncplay.ini
   - copy resources\win_lua_note.txt syncplay_v%ver%\"VLC LUA Script installation.txt"
+  - copy Syncplay-%ver%-Setup.exe Syncplay-%ver%-Setup-Py35.exe
 
 # Not a project with an msbuild file, build done at install.
 build: off
@@ -45,7 +46,6 @@ artifacts:
 # Push artefact to S3 bucket and list all
 before_deploy:
   - dir
-  - copy Syncplay-%ver%-Setup.exe Syncplay-%ver%-Setup-Py35.exe
   #- python -c "from PySide2 import QtCore; print QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.PluginsPath)"
 
 # Deploy build to BinTray
