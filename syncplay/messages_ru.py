@@ -441,7 +441,7 @@ ru = {
     "server-chat-argument": "Should chat be disabled?",  # TODO: Translate
     "server-chat-maxchars-argument": "Maximum number of characters in a chat message (default is {})",  # TODO: Translate
     "server-maxusernamelength-argument": "Maximum number of characters in a username (default is {})", # TODO: Translate
-    "server-log-db-file-argument": "Enable logging in the SQLite db file provided", # TODO: Translate 
+    "server-stats-db-file-argument": "Enable server stats using the SQLite db file provided", # TODO: Translate
     "server-messed-up-motd-unescaped-placeholders" : "MOTD-сообщение содержит неэкранированные спец.символы. Все знаки $ должны быть продублированы ($$).",
     "server-messed-up-motd-too-long" : "MOTD-сообщение слишком длинное: максимальная длина - {} символ(ов), текущая длина - {} символ(ов).",
 
