@@ -1,3 +1,6 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+from future.standard_library import install_aliases
+install_aliases()
 
 import os
 import re
@@ -16,7 +19,7 @@ from syncplay import utils, constants, version, revision, release_number
 from syncplay.messages import getMessage
 from syncplay.ui.consoleUI import ConsoleUI
 from syncplay.utils import resourcespath
-from syncplay.utils import isLinux, isWindows, isMacOS
+from syncplay.utils import isLinux, isWindows, isMacOS, isPython3
 from syncplay.utils import formatTime, sameFilename, sameFilesize, sameFileduration, RoomPasswordProvider, formatSize, isURL
 from syncplay.vendor import Qt
 from syncplay.vendor.Qt import QtWidgets, QtGui, __binding__, __binding_version__, __qt_version__, IsPySide, IsPySide2
@@ -428,7 +431,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.roomInput.setMaxLength(constants.MAX_ROOM_NAME_LENGTH)
 
     def showMessage(self, message, noTimestamp=False):
-        message = str(message)
+        if isPython3():
+            message = str(message)
+        else:
+            message = unicode(message)
         username = None
         messageWithUsername = re.match(constants.MESSAGE_WITH_USERNAME_REGEX, message, re.UNICODE)
         if messageWithUsername:

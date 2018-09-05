@@ -1,5 +1,7 @@
 # coding:utf8
 # You might want to change these
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 DEFAULT_PORT = 8999
 OSD_DURATION = 3.0
 OSD_WARNING_MESSAGE_DURATION = 5.0

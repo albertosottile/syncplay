@@ -1,4 +1,6 @@
 # coding:utf8
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
 import re
 import sys
@@ -8,7 +10,7 @@ import subprocess
 from syncplay import constants
 from syncplay.players.mplayer import MplayerPlayer
 from syncplay.messages import getMessage
-from syncplay.utils import isURL, findResourcePath
+from syncplay.utils import isURL, findResourcePath, isPython3
 
 
 class MpvPlayer(MplayerPlayer):
@@ -130,9 +132,15 @@ class NewMpvPlayer(OldMpvPlayer):
         if not self._client._config["chatOutputEnabled"]:
             super(self.__class__, self).displayMessage(message=message, duration=duration, OSDType=OSDType, mood=mood)
             return
-        messageString = self._sanitizeText(message.replace("\\n", "<NEWLINE>")).replace(
-            "\\\\", constants.MPV_INPUT_BACKSLASH_SUBSTITUTE_CHARACTER).replace("<NEWLINE>", "\\n")
-        self._listener.sendLine('script-message-to syncplayintf {}-osd-{} "{}"'.format(OSDType, mood, messageString))
+        if isPython3():
+            messageString = self._sanitizeText(message.replace("\\n", "<NEWLINE>")).replace(
+                "\\\\", constants.MPV_INPUT_BACKSLASH_SUBSTITUTE_CHARACTER).replace("<NEWLINE>", "\\n")
+            self._listener.sendLine('script-message-to syncplayintf {}-osd-{} "{}"'.format(OSDType, mood, messageString))
+        else:
+            messageString = self._sanitizeText(message.replace("\\n", "<NEWLINE>")).replace(
+                "\\\\",constants.MPV_INPUT_BACKSLASH_SUBSTITUTE_CHARACTER).replace("<NEWLINE>", "\\n")
+            self._listener.sendLine(u'script-message-to syncplayintf {}-osd-{} "{}"'.format(OSDType, mood, messageString))
+
 
     def displayChatMessage(self, username, message):
         if not self._client._config["chatOutputEnabled"]:
@@ -288,7 +296,10 @@ class NewMpvPlayer(OldMpvPlayer):
         self.mpvErrorCheck(line)
 
         if "<chat>" in line:
-            line = line.replace(constants.MPV_INPUT_BACKSLASH_SUBSTITUTE_CHARACTER, "\\")
+            if isPython3():
+                line = line.replace(constants.MPV_INPUT_BACKSLASH_SUBSTITUTE_CHARACTER, "\\")
+            else:
+                line = line.decode("utf-8").replace(constants.MPV_INPUT_BACKSLASH_SUBSTITUTE_CHARACTER, "\\").encode("utf-8")
             self._listener.sendChat(line[6:-7])
 
         if "<get_syncplayintf_options>" in line:

@@ -1,4 +1,6 @@
 # coding:utf8
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
 import re
 import subprocess
@@ -10,7 +12,7 @@ import time
 from syncplay import constants, utils
 from syncplay.players.basePlayer import BasePlayer
 from syncplay.messages import getMessage
-from syncplay.utils import isWindows
+from syncplay.utils import isWindows, isPython3
 
 
 class MplayerPlayer(BasePlayer):
@@ -465,9 +467,15 @@ class MplayerPlayer(BasePlayer):
             try:
                 # if not isinstance(line, str):
                     # line = line.decode('utf8')
-                line = line + "\n"
-                self.__playerController._client.ui.showDebugMessage("player >> {}".format(line))
-                line = line.encode('utf-8')
+                if isPython3():
+                    line = line + "\n"
+                    self.__playerController._client.ui.showDebugMessage("player >> {}".format(line))
+                    line = line.encode('utf-8')
+                else:
+                    #line = line.decode('utf-8')
+                    line = line + "\n"
+                    self.__playerController._client.ui.showDebugMessage("player >> {}".format(line))
+                    line = line.encode('utf-8')
                 self.__process.stdin.write(line)
             except IOError:
                 pass

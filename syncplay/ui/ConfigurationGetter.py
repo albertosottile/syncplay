@@ -10,7 +10,7 @@ from configparser import SafeConfigParser, DEFAULTSECT
 from syncplay import constants, utils, version, milestone
 from syncplay.messages import getMessage, setLanguage, isValidLanguage
 from syncplay.players.playerFactory import PlayerFactory
-from syncplay.utils import isMacOS
+from syncplay.utils import isMacOS, isPython3
 
 
 class InvalidConfigValue(Exception):
@@ -247,10 +247,16 @@ class ConfigurationGetter(object):
                 self._config[key] = False
 
         for key in self._serialised:
-            if self._config[key] is None or self._config[key] == "":
-                self._config[key] = {}
-            elif isinstance(self._config[key], str):
-                self._config[key] = ast.literal_eval(self._config[key])
+            if isPython3():
+                if self._config[key] is None or self._config[key] == "":
+                    self._config[key] = {}
+                elif isinstance(self._config[key], str):
+                    self._config[key] = ast.literal_eval(self._config[key])
+            else:
+                if self._config[key] is None or self._config[key] == "":
+                    self._config[key] = {}
+                elif isinstance(self._config[key], (str, unicode)):
+                    self._config[key] = ast.literal_eval(self._config[key])
 
         for key in self._tristate:
             if self._config[key] == "True":

@@ -1,3 +1,6 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+from future.standard_library import install_aliases
+install_aliases()
 
 import ast
 import datetime
@@ -21,6 +24,9 @@ from syncplay import constants
 from syncplay.messages import getMessage
 
 folderSearchEnabled = True
+
+def isPython3():
+    return (bool (sys.version_info.major >= 3))
 
 
 def isWindows():
@@ -237,10 +243,16 @@ def truncateText(unicodeText, maxLength):
         unicodeText = unicodeText.decode('utf-8')
     except:
         pass
-    try:
-        return(str(unicodeText.encode("utf-8"), "utf-8", errors="ignore")[:maxLength])
-    except:
-        pass
+    if isPython3():
+        try:
+            return(str(unicodeText.encode("utf-8"), "utf-8", errors="ignore")[:maxLength])
+        except:
+            pass
+    else:
+        try:
+            return(unicode(unicodeText.encode("utf-8"), "utf-8", errors="ignore")[:maxLength])
+        except:
+            pass
     return ""
 
 
@@ -381,13 +393,25 @@ def getPlayerArgumentsByPathAsText(arguments, path):
     argsToReturn = getPlayerArgumentsByPathAsArray(arguments, path)
     return " ".join(argsToReturn) if argsToReturn else ""
 
+def unicodeReplaceFromFuture(s):
+    return ''.join(chr(ord(c)) for c in s).decode('utf-8')
 
 def getListAsMultilineString(pathArray):
-    return "\n".join(pathArray) if pathArray else ""
+    if isPython3():
+        return "\n".join(pathArray) if pathArray else ""
+    else:
+        try:
+            pathArray = map(unicodeReplaceFromFuture, pathArray)
+        except:
+            pass
+        return u"\n".join(pathArray) if pathArray else ""
 
 
 def convertMultilineStringToList(multilineString):
-    return str.split(multilineString, "\n") if multilineString else ""
+    if (sys.version_info > (3,0)):
+        return str.split(multilineString, "\n") if multilineString else ""
+    else:
+        return unicode.split(multilineString, u"\n") if multilineString else ""
 
 
 def playlistIsValid(files):
