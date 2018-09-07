@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 
 import asynchat
 import asyncore
@@ -409,7 +410,7 @@ class VlcPlayer(BasePlayer):
                     self.__process = subprocess.Popen(call, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                 self.timeVLCLaunched = time.time()
                 if self._shouldListenForSTDOUT():
-                    for line in iter(self.__process.stderr.readline, ''):
+                    for line in iter(self.__process.stderr.readline, b''):
                         line = line.decode('utf-8')
                         self.vlcHasResponded = True
                         self.timeVLCLaunched = None
@@ -476,7 +477,7 @@ class VlcPlayer(BasePlayer):
 
         def handle_vlcoutput(self):
             out = self.__process.stderr
-            for line in iter(out.readline, ''):
+            for line in iter(out.readline, b''):
                 line = line.decode('utf-8')
                 if '[syncplay] core interface debug: removing module' in line:
                     self.__playerController.drop()

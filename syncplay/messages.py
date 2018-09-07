@@ -1,4 +1,5 @@
 # coding:utf8
+from __future__ import absolute_import, division, print_function, unicode_literals
 from syncplay import constants
 
 from . import messages_en
@@ -67,12 +68,12 @@ def getMessage(type_, locale=None):
     lang = messages["CURRENT"]
     if locale and locale in messages:
         if type_ in messages[locale]:
-            return str(messages[locale][type_])
+            return (messages[locale][type_])
     if lang and lang in messages:
         if type_ in messages[lang]:
-            return str(messages[lang][type_])
+            return (messages[lang][type_])
     if type_ in messages["en"]:
-        return str(messages["en"][type_])
+        return (messages["en"][type_])
     else:
         print("WARNING: Cannot find message '{}'!".format(type_))
         return "!{}".format(type_)  # TODO: Remove
