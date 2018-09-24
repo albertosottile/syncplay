@@ -9,7 +9,7 @@ script:
 - python3 buildPy2app.py py2app
 
 before_install:
-- hg clone https://alby128@bitbucket.org/alby128/py2app
+#- hg clone https://alby128@bitbucket.org/alby128/py2app
 - brew uninstall python
 - brew update
 - brew install python
@@ -23,9 +23,10 @@ before_install:
 - ln -s /usr/local/lib/python3.7/site-packages/PySide2/libshiboken2.cpython-37m-darwin.5.11.dylib /usr/local/lib/
 - python3 -c "from PySide2 import __version__; print(__version__)"
 - python3 -c "from PySide2.QtCore import __version__; print(__version__)" 
-- cd py2app
-- python3 setup.py install
-- cd ..
+#- cd py2app
+#- python3 setup.py install
+#- cd ..
+- pip3 install py2app
 - python3 -c "from py2app.recipes import pyside2" 
 
 install:
