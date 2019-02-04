@@ -17,6 +17,7 @@ init:
   - pip install -U pypiwin32==223
   - pip install twisted
   - pip install zope.interface
+  - pip install pyopenssl
   - type nul > %PYTHON%\lib\site-packages\zope\__init__.py
   - curl -L https://bintray.com/alby128/Syncplay/download_file?file_path=py2exe-0.9.2.2-py33.py34.py35-none-any.whl -o py2exe-0.9.2.2-py33.py34.py35-none-any.whl
   - pip install py2exe-0.9.2.2-py33.py34.py35-none-any.whl
