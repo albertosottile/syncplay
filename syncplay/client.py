@@ -704,7 +704,6 @@ class SyncplayClient(object):
         if '[' in host:
             host = host.strip('[]')
         port = int(port)
-
         self._wrapped = HostnameEndpoint(reactor, host, port)
         self._contextFactory = optionsForClientTLS(hostname=host)
         self._endpoint = wrapClientTLS(self._contextFactory, self._wrapped)
