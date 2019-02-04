@@ -3,7 +3,7 @@ osx_image: xcode7.3
 
 branches:
   only:
-  - master_local
+  - TLS
 
 script:
 - python3 buildPy2app.py py2app
@@ -37,12 +37,12 @@ before_deploy:
 - mv resources/lua/intf/syncplay.lua resources/lua/intf/.syncplay.lua
 - mv resources/macOS_readme.pdf resources/.macOS_readme.pdf
 - export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
-- dmgbuild -s appdmg.py "Syncplay" dist_dmg/Syncplay_${VER}.dmg
+- dmgbuild -s appdmg.py "Syncplay" dist_dmg/Syncplay_${VER}_TLS.dmg
 - python3 bintray_version.py
 
 deploy:
   skip_cleanup: true
-  on: master_local
+  on: TLS
   provider: bintray
   file: "bintray.json"
   user: alby128
