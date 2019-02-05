@@ -1,7 +1,9 @@
 
 import ast
+import certifi
 import collections
 import hashlib
+import os
 import os.path
 import random
 import re
@@ -24,6 +26,7 @@ from syncplay.messages import getMissingStrings, getMessage
 from syncplay.protocols import SyncClientProtocol
 from syncplay.utils import isMacOS
 
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 class SyncClientFactory(ClientFactory):
     def __init__(self, client, retry=constants.RECONNECT_RETRIES):
