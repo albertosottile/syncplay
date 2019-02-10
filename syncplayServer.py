@@ -16,6 +16,7 @@ except AttributeError:
 from OpenSSL import crypto
 from twisted.internet import reactor, ssl
 from twisted.internet.endpoints import SSL4ServerEndpoint
+from twisted.python.filepath import FilePath
 
 from syncplay.server import SyncFactory, ConfigurationGetter
 
@@ -28,7 +29,12 @@ privkeypyssl = crypto.load_privatekey(crypto.FILETYPE_PEM, privkey)
 certifpyssl = crypto.load_certificate(crypto.FILETYPE_PEM, certif)
 chainpyssl = [crypto.load_certificate(crypto.FILETYPE_PEM, chain)]
 
-contextFactory = ssl.CertificateOptions(privateKey=privkeypyssl, certificate=certifpyssl, extraCertChain=chainpyssl)
+dhFilePath = FilePath(tlsCertPath+'/dh_param.pem')
+dhParams = ssl.DiffieHellmanParameters.fromFile(dhFilePath)
+
+contextFactory = ssl.CertificateOptions(privateKey=privkeypyssl, certificate=certifpyssl,
+                                        extraCertChain=chainpyssl, dhParameters=dhParams,
+                                        raiseMinimumTo=ssl.TLSVersion.TLSv1_2)
 
 if __name__ == '__main__':
     argsGetter = ConfigurationGetter()
