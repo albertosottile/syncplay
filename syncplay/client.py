@@ -19,7 +19,7 @@ from twisted.application.internet import ClientService
 
 try:
     import certifi
-    from twisted.internet.ssl import optionsForClientTLS
+    from twisted.internet.ssl import Certificate, optionsForClientTLS
     os.environ['SSL_CERT_FILE'] = certifi.where()
 except:
     pass
@@ -115,7 +115,7 @@ class SyncplayClient(object):
         self._warnings = self._WarningManager(self._player, self.userlist, self.ui, self)
         self.fileSwitch = FileSwitchManager(self)
         self.playlist = SyncplayPlaylist(self)
-        
+
         self._serverSupportsTLS = True
 
         if constants.LIST_RELATIVE_CONFIGS and 'loadedRelativePaths' in self._config and self._config['loadedRelativePaths']:
@@ -715,9 +715,13 @@ class SyncplayClient(object):
         port = int(port)
         self._endpoint = HostnameEndpoint(reactor, host, port)
         try:
+            caCertFP = open(certifi.where())
+            caCertTwisted = Certificate.loadPEM(caCertFP.read())
+            caCertFP.close()
             self.protocolFactory.options = optionsForClientTLS(hostname=host)
             self._clientSupportsTLS = True
         except Exception as e:
+            self.ui.showDebugMessage(str(e))
             self.protocolFactory.options = None
             self._clientSupportsTLS = False
 
