@@ -55,6 +55,7 @@ class SyncFactory(Factory):
         else:
             self._statsDbHandle = None
         self.options = None
+        self.serverAcceptsTLS = False
         if tlsCertPath is not None:
             self._allowTLSconnections(tlsCertPath)
 
@@ -205,27 +206,33 @@ class SyncFactory(Factory):
 
     def _allowTLSconnections(self, path):
         try:
-            privKey = open(path+'/privkey.pem', 'rt').read()
-            certif = open(path+'/cert.pem', 'rt').read()
-            chain = open(path+'/chain.pem', 'rt').read()
-
-            privKeyPySSL = crypto.load_privatekey(crypto.FILETYPE_PEM, privKey)
-            certifPySSL = crypto.load_certificate(crypto.FILETYPE_PEM, certif)
-            chainPySSL = [crypto.load_certificate(crypto.FILETYPE_PEM, chain)]
-
-            cipherListString = "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:"\
-	                           "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:"\
-	                           "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384"
-            accCiphers = ssl.AcceptableCiphers.fromOpenSSLCipherString(cipherListString)
-
-            contextFactory = ssl.CertificateOptions(privateKey=privKeyPySSL, certificate=certifPySSL,
-                                                    extraCertChain=chainPySSL, acceptableCiphers=accCiphers,
-                                                    raiseMinimumTo=ssl.TLSVersion.TLSv1_2)
-            self.options = contextFactory
+            self.options = self.createTLSContextFactory(path)
+            self.serverAcceptsTLS = True
         except Exception as e:
             self.options = None
+            self.serverAcceptsTLS = False
             print(e)
             print("TLS support is not enabled.")
+
+    def createTLSContextFactory(self, path):
+        privKey = open(path+'/privkey.pem', 'rt').read()
+        certif = open(path+'/cert.pem', 'rt').read()
+        chain = open(path+'/chain.pem', 'rt').read()
+
+        privKeyPySSL = crypto.load_privatekey(crypto.FILETYPE_PEM, privKey)
+        certifPySSL = crypto.load_certificate(crypto.FILETYPE_PEM, certif)
+        chainPySSL = [crypto.load_certificate(crypto.FILETYPE_PEM, chain)]
+
+        cipherListString = "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:"\
+                           "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:"\
+                           "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384"
+        accCiphers = ssl.AcceptableCiphers.fromOpenSSLCipherString(cipherListString)
+
+        contextFactory = ssl.CertificateOptions(privateKey=privKeyPySSL, certificate=certifPySSL,
+                                                extraCertChain=chainPySSL, acceptableCiphers=accCiphers,
+                                                raiseMinimumTo=ssl.TLSVersion.TLSv1_2)
+
+        return contextFactory
 
 
 class StatsRecorder(object):
