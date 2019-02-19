@@ -208,34 +208,46 @@ class SyncFactory(Factory):
             watcher.setPlaylistIndex(room.getName(), room.getPlaylistIndex())
 
     def _allowTLSconnections(self, path):
-        try:
-            self.options = self.createTLSContextFactory(path)
+        self.options = self._createTLSContextFactory(path)
+        if self.options is not None:
             self.serverAcceptsTLS = True
-        except Exception as e:
-            self.options = None
+        else:
             self.serverAcceptsTLS = False
-            print(e)
+            self.lastEditCertTime = None
             print("TLS support is not enabled.")
 
-    def createTLSContextFactory(self, path):
-        privKey = open(path+'/privkey.pem', 'rt').read()
-        certif = open(path+'/cert.pem', 'rt').read()
-        chain = open(path+'/chain.pem', 'rt').read()
+    def _createTLSContextFactory(self, path):
+        try:
+            privKey = open(path+'/privkey.pem', 'rt').read()
+            certif = open(path+'/cert.pem', 'rt').read()
+            chain = open(path+'/chain.pem', 'rt').read()
 
-        privKeyPySSL = crypto.load_privatekey(crypto.FILETYPE_PEM, privKey)
-        certifPySSL = crypto.load_certificate(crypto.FILETYPE_PEM, certif)
-        chainPySSL = [crypto.load_certificate(crypto.FILETYPE_PEM, chain)]
+            self.lastEditCertTime = os.path.getmtime(path+'/cert.pem')
 
-        cipherListString = "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:"\
-                           "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:"\
-                           "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384"
-        accCiphers = ssl.AcceptableCiphers.fromOpenSSLCipherString(cipherListString)
+            privKeyPySSL = crypto.load_privatekey(crypto.FILETYPE_PEM, privKey)
+            certifPySSL = crypto.load_certificate(crypto.FILETYPE_PEM, certif)
+            chainPySSL = [crypto.load_certificate(crypto.FILETYPE_PEM, chain)]
 
-        contextFactory = ssl.CertificateOptions(privateKey=privKeyPySSL, certificate=certifPySSL,
-                                                extraCertChain=chainPySSL, acceptableCiphers=accCiphers,
-                                                raiseMinimumTo=ssl.TLSVersion.TLSv1_2)
+            cipherListString = "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:"\
+                               "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:"\
+                               "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384"
+            accCiphers = ssl.AcceptableCiphers.fromOpenSSLCipherString(cipherListString)
+
+            contextFactory = ssl.CertificateOptions(privateKey=privKeyPySSL, certificate=certifPySSL,
+                                                    extraCertChain=chainPySSL, acceptableCiphers=accCiphers,
+                                                    raiseMinimumTo=ssl.TLSVersion.TLSv1_2)
+        except Exception as e:
+            print(e)
+            contextFactory = None
 
         return contextFactory
+
+    def checkLastEditCertTime(self):
+        return os.path.getmtime(self.certPath+'/cert.pem')
+
+    def updateTLSContextFactory(self):
+        self.options = self._createTLSContextFactory(self.certPath)
+
 
 
 class StatsRecorder(object):
