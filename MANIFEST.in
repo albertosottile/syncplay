@@ -1,4 +1,6 @@
+include GNUmakefile
 include LICENSE
+include Makefile
 include syncplay/resources/*.png
 include syncplay/resources/*.mng
 include syncplay/resources/*.lua

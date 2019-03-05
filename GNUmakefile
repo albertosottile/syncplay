@@ -66,11 +66,21 @@ ifeq ($(SINGLE_USER),false)
 	chmod 755 $(APP_SHORTCUT_PATH)/syncplay.desktop
 endif
 
+client-setuptools:
+	-mkdir -p $(BIN_PATH)
+	cp $(shell which syncplay) $(BIN_PATH)/
+	chmod 755 $(BIN_PATH)/syncplay
+	cp syncplay/resources/syncplay.desktop $(APP_SHORTCUT_PATH)/
+
 u-client:
 	-rm $(BIN_PATH)/syncplay
 	-rm $(LIB_PATH)/syncplay/syncplayClient.py
 	-rm ${DESTDIR}$(VLC_LIB_PATH)/vlc/lua/intf/syncplay.lua
 	-rm ${DESTDIR}$(VLC_LIB_PATH64)/vlc/lua/intf/syncplay.lua
+	-rm $(APP_SHORTCUT_PATH)/syncplay.desktop
+
+u-client-setuptools:
+	-rm $(BIN_PATH)/syncplay
 	-rm $(APP_SHORTCUT_PATH)/syncplay.desktop
 
 server:
@@ -85,15 +95,29 @@ ifeq ($(SINGLE_USER),false)
 	chmod 755 $(APP_SHORTCUT_PATH)/syncplay-server.desktop
 endif
 
+server-setuptools:
+	-mkdir -p $(BIN_PATH)
+	cp $(shell which syncplay-server) $(BIN_PATH)/
+	cp syncplay/resources/syncplay-server.desktop $(APP_SHORTCUT_PATH)/
+
 u-server:
 	-rm $(BIN_PATH)/syncplay-server
 	-rm $(LIB_PATH)/syncplay/syncplayServer.py
+	-chmod 755 $(BIN_PATH)/syncplay-server
 	-rm $(APP_SHORTCUT_PATH)/syncplay-server.desktop
-	
+
+u-server-setuptools:
+	-rm $(BIN_PATH)/syncplay-server
+	-rm $(APP_SHORTCUT_PATH)/syncplay-server.desktop
+
 warnings:
 ifeq ($(SINGLE_USER),true)
 	@echo -e "\n**********\n**********\n \nRemeber to add ${HOME}/.local/bin to your \$$PATH with 'echo \"export PATH=\$$PATH:${HOME}/.local/bin\" >> ${HOME}/.profile' \nThis will take effect after you logoff.\n \n**********\n**********\n"
 endif
+
+install-setuptools: common client-setuptools server-setuptools
+
+uninstall-setuptools: u-common u-client-setuptools u-server-setuptools
 
 install-client: common client warnings
 

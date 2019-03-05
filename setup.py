@@ -1,17 +1,28 @@
 #!/usr/bin/env python3
 
-import distutils.command.install_scripts
 import setuptools
 import shutil
+import subprocess
 import sys
 
+from setuptools.command.install import install
+
 from syncplay import version as syncplay_version
+from syncplay.utils import isLinux
+
+class Install(install):
+    def run(self):
+        install.run(self)
+        if isLinux():
+            protoc_command = ["make", "install-setuptools", "SINGLE_USER=true"]
+            if subprocess.call(protoc_command) != 0:
+                sys.exit(-1)
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="syncplay-setuptools-test-3",
+    name="syncplay-setuptools-test-4",
     version=syncplay_version,
     author="Syncplay",
     author_email="dev@syncplay.pl",
@@ -51,4 +62,7 @@ setuptools.setup(
         "Topic :: Internet",
         "Topic :: Multimedia :: Video"
     ],
+    cmdclass={
+        'install': Install,
+    },
 )
