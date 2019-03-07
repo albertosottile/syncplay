@@ -3,11 +3,8 @@ matrix:
     - language: objective-c
       osx_image: xcode8.3
     - language: bash
+      sudo: required
       dist: xenial
-      addons:
-        apt:
-          packages:
-          - snapcraft
 
 branches:
   only:
@@ -15,10 +12,11 @@ branches:
 
 script:
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then python3 buildPy2app.py py2app ; fi
-- if [ "$TRAVIS_OS_NAME" == "linux" ]; then snapcraft --debug ; fi
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo snapcraft cleanbuild ; fi
 
 install:
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then travis/macos-install.sh ; fi
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then travis/linux-install.sh ; fi
 
 before_deploy:
 - ls -al
@@ -26,7 +24,7 @@ before_deploy:
 - python3 bintray_version.py
 - mkdir dist_bintray
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then travis/macos-deploy.sh ; fi
-- if [ "$TRAVIS_OS_NAME" == "linux" ]; then mv syncplay_${VER}_amd64.snap dist_bintray/ ; fi
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then mv syncplay_build_amd64.snap dist_bintray/syncplay_${VER}_amd64.snap ; fi
 
 deploy:
   skip_cleanup: true
