@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import distutils.command.install_scripts
+import os
 import setuptools
 import shutil
 import sys
@@ -10,8 +11,23 @@ from syncplay import version as syncplay_version
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+if os.getenv('SNAPCRAFT_PART_BUILD', None) is not None:
+    pypiRequirements = ["pyasn1", "twisted[tls]", "certifi",
+                        'zope.inteface; platform_system=="Windows"',
+                        'pypiwin32; platform_system=="Windows"',
+                        'appnope; platform_system=="Darwin"',
+                        'requests; platform_system=="Darwin"'
+                       ]
+else:
+    pypiRequirements = ["twisted[tls]", "certifi", "pyside2",
+                        'zope.inteface; platform_system=="Windows"',
+                        'pypiwin32; platform_system=="Windows"',
+                        'appnope; platform_system=="Darwin"',
+                        'requests; platform_system=="Darwin"'
+                       ]
+
 setuptools.setup(
-    name="syncplay-setuptools-test-3",
+    name="syncplay",
     version=syncplay_version,
     author="Syncplay",
     author_email="dev@syncplay.pl",
@@ -20,10 +36,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://www.syncplay.pl",
     packages=setuptools.find_packages(),
-    install_requires=["pyasn1", "twisted[tls]", "certifi", "pyside2",
-        'zope.inteface; platform_system=="Windows"', 'pypiwin32; platform_system=="Windows"',
-        'appnope; platform_system=="Darwin"', 'requests; platform_system=="Darwin"'
-        ],
+    install_requires=pypiRequirements,
     python_requires=">=3.4",
     entry_points={
         'console_scripts': [
