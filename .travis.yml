@@ -1,41 +1,33 @@
-language: objective-c
-osx_image: xcode8.3
+language: bash
+dist: xenial
+addons:
+  apt:
+    packages:
+    - snapcraft
 
 branches:
   only:
-  - master_local
+  - setuptools
 
 script:
-- python3 buildPy2app.py py2app
+- snapcraft --debug
 
 before_install:
-- brew update
-- brew upgrade python
-- which python3
-- python3 --version
-- which pip3
-- pip3 --version
-- curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/dd6c67c1ba664c8910fe96aeb58f9938d97d9a53/Formula/pyside.rb -o pyside.rb
-- brew install ./pyside.rb
-- python3 -c "from PySide2 import __version__; print(__version__)"
-- python3 -c "from PySide2.QtCore import __version__; print(__version__)" 
-- pip3 install py2app
-- python3 -c "from py2app.recipes import pyside2" 
+- ls
 
 install:
-- pip3 install twisted[tls] appnope requests certifi
+- ls
 
 before_deploy:
-- pip3 install dmgbuild
-- mkdir dist_dmg
-- mv syncplay/resources/macOS_readme.pdf syncplay/resources/.macOS_readme.pdf
+- ls -al
 - export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
-- dmgbuild -s appdmg.py "Syncplay" dist_dmg/Syncplay_${VER}.dmg
+- mkdir dist_bintray
+- mv syncplay_${VER}_amd64.snap dist_bintray/
 - python3 bintray_version.py
 
 deploy:
   skip_cleanup: true
-  on: master_local
+  on: setuptools
   provider: bintray
   file: "bintray.json"
   user: alby128
