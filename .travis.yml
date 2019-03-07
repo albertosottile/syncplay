@@ -1,29 +1,32 @@
-language: bash
-dist: xenial
-addons:
-  apt:
-    packages:
-    - snapcraft
+matrix:
+  include:
+    - language: objective-c
+      osx_image: xcode8.3
+    - language: bash
+      dist: xenial
+      addons:
+        apt:
+          packages:
+          - snapcraft
 
 branches:
   only:
   - setuptools
 
 script:
-- snapcraft --debug
-
-before_install:
-- ls
+- if [ "$TRAVIS_OS_NAME" == "osx" ]; then python3 buildPy2app.py py2app ; fi
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then snapcraft --debug ; fi
 
 install:
-- ls
+- if [ "$TRAVIS_OS_NAME" == "osx" ]; then travis/macos-install.sh ; fi
 
 before_deploy:
 - ls -al
 - export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
-- mkdir dist_bintray
-- mv syncplay_${VER}_amd64.snap dist_bintray/
 - python3 bintray_version.py
+- mkdir dist_bintray
+- if [ "$TRAVIS_OS_NAME" == "osx" ]; then travis/macos-deploy.sh ; fi
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then mv syncplay_${VER}_amd64.snap dist_bintray/ ; fi
 
 deploy:
   skip_cleanup: true
