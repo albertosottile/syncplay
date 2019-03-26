@@ -11,11 +11,9 @@ def read(fname):
         return f.read()
 
 if os.getenv('SNAPCRAFT_PART_BUILD', None) is not None:
-    installRequirements = ["pyasn1"] + read('requirements.txt').splitlines() +\
-                          read('requirements_tls.txt').splitlines()
+    installRequirements = ["pyasn1"] + read('requirements.txt').splitlines()
 else:
     installRequirements = read('requirements.txt').splitlines() +\
-                          read('requirements_tls.txt').splitlines() +\
                           read('requirements_gui.txt').splitlines()
 
 setuptools.setup(
