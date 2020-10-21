@@ -23,7 +23,7 @@ jobs:
 
 branches:
   only:
-  - master_local
+  - iina
 
 script:
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then python3 buildPy2app.py py2app ; fi
@@ -51,7 +51,7 @@ before_deploy:
 
 deploy:
   skip_cleanup: true
-  on: master_local
+  on: iina
   provider: bintray
   file: "bintray.json"
   user: alby128
