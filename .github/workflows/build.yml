@@ -11,7 +11,7 @@ jobs:
 
       - name: Homebrew
         run: |
-          brew update
+          brew update > /dev/null
           brew install python pyside qt
           brew upgrade
 
