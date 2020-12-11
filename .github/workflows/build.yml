@@ -40,9 +40,9 @@ jobs:
           python3 bintray_version.py
           mkdir dist_bintray
           travis/macos-deploy.sh
+          ls -al dist_bintray
 
       - name: Deploy
-        run: ls -al dist_bintray
         uses: bpicode/github-action-upload-bintray@master
         with:
           file: ./dist_bintray/Syncplay_${VER}.dmg
