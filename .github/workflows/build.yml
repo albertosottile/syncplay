@@ -18,9 +18,8 @@ jobs:
           pip3 --version
           brew install pyside qt
 
-      - name: Check homebrew dependencies
+      - name: Check Homebrew dependencies
         run: |
-
           python3 -c "from PySide2 import __version__; print(__version__)"
           python3 -c "from PySide2.QtCore import __version__; print(__version__)" 
           python3 -c "import ssl; print(ssl)"
@@ -44,3 +43,14 @@ jobs:
 
       - name: Deploy
         run: ls -al dist_bintray
+        uses: bpicode/github-action-upload-bintray@master
+        with:
+          file: ./dist_bintray/Syncplay_${VER}.dmg
+          api_user: alby128
+          api_key: ${{ secrets.BINTRAY_API_KEY }}
+          repository_user: syncplay
+          repository: Syncplay
+          package: Syncplay
+          version: ${VER}
+          publish: 1
+          calculate_metadata: true
