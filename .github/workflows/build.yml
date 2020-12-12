@@ -17,14 +17,14 @@ jobs:
           curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/99219f0923014b24f33eae624fbfe83772c35f54/Formula/pyside.rb -o pyside.rb
           curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/b2f67e742630b1b2353a9870e6ef18d8eaa19638/Formula/qt.rb -o qt.rb
           cp openssl@1.1.rb $(brew formula openssl@1.1)
-          cp python.rb $(brew formula python)/../python.rb
+          cp python.rb /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/
           cp pyside.rb $(brew formula pyside)
           cp qt.rb $(brew formula qt)
 
       - name: Install Homebrew dependencies
         run: |
           brew upgrade openssl@1.1
-          brew upgrade python
+          brew install python
           which python3
           python3 --version
           which pip3
