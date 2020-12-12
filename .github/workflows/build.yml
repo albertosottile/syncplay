@@ -9,9 +9,22 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
+      - name: Overwrite Homebrew formulas
+        run: |
+          export HOMEBREW_NO_INSTALL_CLEANUP=1
+          curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/e9004bd764c9436750a50e0b428548f68fe6a38a/Formula/openssl@1.1.rb -o openssl@1.1.rb
+          curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/e9004bd764c9436750a50e0b428548f68fe6a38a/Formula/python.rb -o python.rb
+          curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/99219f0923014b24f33eae624fbfe83772c35f54/Formula/pyside.rb -o pyside.rb
+          curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/b2f67e742630b1b2353a9870e6ef18d8eaa19638/Formula/qt.rb -o qt.rb
+          cp openssl@1.1.rb $(find $(brew --repository) -name openssl@1.1.rb)
+          cp python.rb $(find $(brew --repository) -name python.rb)
+          cp pyside.rb $(find $(brew --repository) -name pyside.rb)
+          cp qt.rb $(find $(brew --repository) -name qt.rb)
+
       - name: Install Homebrew dependencies
         run: |
-          brew update > /dev/null
+          brew upgrade openssl@1.1
+          brew upgrade python
           which python3
           python3 --version
           which pip3
@@ -45,6 +58,6 @@ jobs:
       - name: Deploy
         uses: actions/upload-artifact@v2
         with:
-          name: macos
+          name: Syncplay_${VER}.dmg
           path: |
-            dist_bintray/*
+            dist_bintray/Syncplay_${VER}.dmg
