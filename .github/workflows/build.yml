@@ -16,10 +16,10 @@ jobs:
           curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/e9004bd764c9436750a50e0b428548f68fe6a38a/Formula/python.rb -o python.rb
           curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/99219f0923014b24f33eae624fbfe83772c35f54/Formula/pyside.rb -o pyside.rb
           curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/b2f67e742630b1b2353a9870e6ef18d8eaa19638/Formula/qt.rb -o qt.rb
-          cp openssl@1.1.rb $(find $(brew --repository) -name openssl@1.1.rb)
-          cp python.rb $(find $(brew --repository) -name python.rb)
-          cp pyside.rb $(find $(brew --repository) -name pyside.rb)
-          cp qt.rb $(find $(brew --repository) -name qt.rb)
+          cp openssl@1.1.rb $(brew formula openssl@1.1)
+          cp python.rb $(brew formula python)
+          cp pyside.rb $(brew formula pyside)
+          cp qt.rb $(brew formula qt)
 
       - name: Install Homebrew dependencies
         run: |
