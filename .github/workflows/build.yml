@@ -59,6 +59,6 @@ jobs:
       - name: Deploy
         uses: actions/upload-artifact@v2
         with:
-          name: Syncplay_${VER}.dmg
+          name: Syncplay_${{ env.VER }}.dmg
           path: |
-            dist_bintray/Syncplay_${VER}.dmg
+            dist_bintray/Syncplay_${{ env.VER }}.dmg
