@@ -51,7 +51,7 @@ jobs:
         run: |
           ls -al
           export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
-          echo "::set-env name=VER::$VER"
+          echo "VER=$VER" >> $GITHUB_ENV
           mkdir dist_bintray
           travis/macos-deploy.sh
           ls -al dist_bintray
