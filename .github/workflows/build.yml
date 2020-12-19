@@ -9,43 +9,38 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v2
 
-      - name: Overwrite Homebrew formulas
-        run: |
-          export HOMEBREW_NO_INSTALL_CLEANUP=1
-          curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/e9004bd764c9436750a50e0b428548f68fe6a38a/Formula/openssl@1.1.rb -o openssl@1.1.rb
-          curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/e9004bd764c9436750a50e0b428548f68fe6a38a/Formula/python.rb -o python.rb
-          curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/99219f0923014b24f33eae624fbfe83772c35f54/Formula/pyside.rb -o pyside.rb
-          curl -L https://raw.githubusercontent.com/Homebrew/homebrew-core/b2f67e742630b1b2353a9870e6ef18d8eaa19638/Formula/qt.rb -o qt.rb
-          cp openssl@1.1.rb $(brew formula openssl@1.1)
-          cp python.rb /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/
-          cp pyside.rb $(brew formula pyside)
-          cp qt.rb $(brew formula qt)
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
 
-      - name: Install Homebrew dependencies
+      - name: Check Python install
         run: |
-          brew upgrade openssl@1.1
-          brew unlink python@3.9
-          brew install python
           which python3
           python3 --version
           which pip3
           pip3 --version
-          brew install pyside qt
-
-      - name: Check Homebrew dependencies
-        run: |
-          python3 -c "from PySide2 import __version__; print(__version__)"
-          python3 -c "from PySide2.QtCore import __version__; print(__version__)" 
-          python3 -c "import ssl; print(ssl)"
 
       - name: Install Python dependencies
         run: |   
-          pip3 install py2app
-          python3 -c "from py2app.recipes import pyside2"
           pip3 install twisted[tls] appnope requests certifi
+          pip3 install shiboken2==5.13.1 pyside2==5.13.1
+          pip3 install py2app
+          python3 travis/pyside2_linker.py
+
+      - name: Check Python dependencies
+        run: |
+          python3 -c "from PySide2 import __version__; print(__version__)"
+          python3 -c "from PySide2.QtCore import __version__; print(__version__)" 
+          python3 -c "from PySide2.QtCore import QLibraryInfo; print(QLibraryInfo.location(QLibraryInfo.LibrariesPath))"
+          python3 -c "import ssl; print(ssl)"
+          python3 -c "from py2app.recipes import pyside2"
+
 
       - name: Build
-        run: python3 buildPy2app.py py2app
+        run: |
+          export DYLD_FRAMEWORK_PATH="$(python3 -c 'from PySide2.QtCore import QLibraryInfo; print(QLibraryInfo.location(QLibraryInfo.LibrariesPath))')" 
+          python3 buildPy2app.py py2app
 
       - name: Prepare for deployment
         run: |
