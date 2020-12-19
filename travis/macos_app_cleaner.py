@@ -6,7 +6,7 @@ PATH = 'dist/Syncplay.app/Contents/Resources/lib'
 zin = zipfile.ZipFile(f'{PATH}/python37.zip', 'r')
 tbd = [path for path in zin.namelist() if 'PySide2/Qt/' in path]
 
-zout = zipfile.ZipFile(f'{PATH}/python37_new.zip', 'w')
+zout = zipfile.ZipFile(f'{PATH}/python37_new.zip', 'w', zipfile.ZIP_DEFLATED)
 
 for item in zin.namelist():
     buffer = zin.read(item)
