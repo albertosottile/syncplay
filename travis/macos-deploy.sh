@@ -2,6 +2,7 @@
 
 set -ex
 
+cp dist/Syncplay.app/Contents/Resources/qt.conf dist/Syncplay.app/Contents/MacOS/
 mkdir dist/Syncplay.app/Contents/Resources/English.lproj
 mkdir dist/Syncplay.app/Contents/Resources/en_AU.lproj
 mkdir dist/Syncplay.app/Contents/Resources/en_GB.lproj
