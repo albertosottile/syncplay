@@ -13,6 +13,7 @@ description: |
   you can discuss a video as you watch it (or you could use third-party Voice over 
   IP software to talk over a video).
 
+base: core18
 confinement: classic
 icon: syncplay/resources/syncplay.png
 grade: stable
