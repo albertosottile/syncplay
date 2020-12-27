@@ -96,19 +96,48 @@ jobs:
   #         path: |
   #           dist_bintray/syncplay_${{ env.VER }}_amd64.snap
 
-  appimage:
-    name: Build AppImage
-    runs-on: ubuntu-16.04
+  # appimage:
+  #   name: Build AppImage
+  #   runs-on: ubuntu-16.04
+  #   steps:
+  #     - name: Checkout 
+  #       uses: actions/checkout@v2
+      
+  #     - name: Install dependencies
+  #       run: |
+  #         sudo apt-get install libxkbcommon-x11-0   
+
+  #     - name: Build
+  #       run: travis/appimage-script.sh
+
+  #     - name: Prepare for deployment
+  #       run: |
+  #         ls -al
+  #         export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
+  #         echo "VER=$VER" >> $GITHUB_ENV
+  #         mkdir dist_bintray
+  #         travis/appimage-deploy.sh
+  #         ls -al dist_bintray          
+
+  #     - name: Deploy
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: Syncplay-${{ env.VER }}-x86_64.AppImage
+  #         path: |
+  #           dist_bintray/Syncplay-${{ env.VER }}-x86_64.AppImage
+
+  deb:
+    name: Build Debian package
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
       
-      - name: Install dependencies
-        run: |
-          sudo apt-get install libxkbcommon-x11-0   
-
       - name: Build
-        run: travis/appimage-script.sh
+        run: travis/deb-script.sh
+
+      - name: Test
+        run: travis/deb-installation-test.sh
 
       - name: Prepare for deployment
         run: |
@@ -116,12 +145,12 @@ jobs:
           export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
           echo "VER=$VER" >> $GITHUB_ENV
           mkdir dist_bintray
-          travis/appimage-deploy.sh
+          mv /tmp/syncplay.deb dist_bintray/syncplay_${VER}.deb
           ls -al dist_bintray          
 
       - name: Deploy
         uses: actions/upload-artifact@v2
         with:
-          name: Syncplay-${{ env.VER }}-x86_64.AppImage
+          name: syncplay_${{ env.VER }}.deb
           path: |
-            dist_bintray/Syncplay-${{ env.VER }}-x86_64.AppImage
+            dist_bintray/syncplay_${{ env.VER }}.deb
