@@ -65,20 +65,50 @@ jobs:
   #         path: |
   #           dist_bintray/Syncplay_${{ env.VER }}.dmg
 
-  snapcraft:
-    name: Build for Snap
-    runs-on: ubuntu-18.04
+  # snapcraft:
+  #   name: Build for Snap
+  #   runs-on: ubuntu-18.04
+  #   steps:
+  #     - name: Checkout 
+  #       uses: actions/checkout@v2
+      
+  #     - name: Install Snapcraft with LXD
+  #       uses: samuelmeuli/action-snapcraft@v1
+  #       with:
+  #         use_lxd: true
+
+  #     - name: Build
+  #       run: sudo snapcraft cleanbuild
+
+  #     - name: Prepare for deployment
+  #       run: |
+  #         ls -al
+  #         export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
+  #         echo "VER=$VER" >> $GITHUB_ENV
+  #         mkdir dist_bintray
+  #         mv syncplay_build_amd64.snap dist_bintray/syncplay_${VER}_amd64.snap
+  #         ls -al dist_bintray          
+
+  #     - name: Deploy
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: syncplay_${{ env.VER }}_amd64.snap
+  #         path: |
+  #           dist_bintray/syncplay_${{ env.VER }}_amd64.snap
+
+  appimage:
+    name: Build AppImage
+    runs-on: ubuntu-16.04
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
       
-      - name: Install Snapcraft with LXD
-        uses: samuelmeuli/action-snapcraft@v1
-        with:
-          use_lxd: true
+      - name: Install dependencies
+        run: |
+          sudo apt-get install libxkbcommon-x11-0   
 
       - name: Build
-        run: sudo snapcraft cleanbuild
+        run: travis/appimage-script.sh
 
       - name: Prepare for deployment
         run: |
@@ -86,12 +116,12 @@ jobs:
           export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
           echo "VER=$VER" >> $GITHUB_ENV
           mkdir dist_bintray
-          mv syncplay_build_amd64.snap dist_bintray/syncplay_${VER}_amd64.snap
+          travis/appimage-deploy.sh
           ls -al dist_bintray          
 
       - name: Deploy
         uses: actions/upload-artifact@v2
         with:
-          name: syncplay_${{ env.VER }}_amd64.snap
+          name: Syncplay-${{ env.VER }}-x86_64.AppImage
           path: |
-            dist_bintray/syncplay_${{ env.VER }}_amd64.snap
+            dist_bintray/Syncplay-${{ env.VER }}-x86_64.AppImage
