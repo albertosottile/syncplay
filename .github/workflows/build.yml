@@ -74,6 +74,8 @@ jobs:
       
       - name: Build
         uses: snapcore/action-build@v1
+        with:
+          snapcraft-args: 'cleanbuild'
 
       - name: Prepare for deployment
         run: |
