@@ -67,26 +67,13 @@ jobs:
 
   snapcraft:
     name: Build for Snap
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: |
-          sudo groupadd --system lxd
-          sudo usermod -a -G lxd $USER
-          sudo apt-get -qq update
-          sudo apt-get -y install snapd
-          sudo snap install lxd
-          sudo lxd.migrate -yes
-          sudo lxd waitready
-          sudo lxd init --auto --storage-backend dir
-          sudo snap install snapcraft --classic
-
+      
       - name: Build
-        run: |
-          sudo snapcraft cleanbuild
+        uses: snapcore/action-build@v1
 
       - name: Prepare for deployment
         run: |
@@ -94,7 +81,7 @@ jobs:
           export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
           echo "VER=$VER" >> $GITHUB_ENV
           mkdir dist_bintray
-          mv syncplay_build_amd64.snap dist_bintray/syncplay_${VER}_amd64.snap
+          mv ${{ steps.snapcraft.outputs.snap }} dist_bintray/syncplay_${VER}_amd64.snap
           ls -al dist_bintray          
 
       - name: Deploy
