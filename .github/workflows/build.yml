@@ -67,15 +67,18 @@ jobs:
 
   snapcraft:
     name: Build for Snap
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
       
-      - name: Build
-        uses: snapcore/action-build@v1
+      - name: Install Snapcraft with LXD
+        uses: samuelmeuli/action-snapcraft@v1
         with:
-          snapcraft-args: 'cleanbuild'
+          use_lxd: true
+
+      - name: Build
+        run: sudo snapcraft cleanbuild
 
       - name: Prepare for deployment
         run: |
@@ -83,7 +86,7 @@ jobs:
           export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
           echo "VER=$VER" >> $GITHUB_ENV
           mkdir dist_bintray
-          mv ${{ steps.snapcraft.outputs.snap }} dist_bintray/syncplay_${VER}_amd64.snap
+          mv syncplay_build_amd64.snap dist_bintray/syncplay_${VER}_amd64.snap
           ls -al dist_bintray          
 
       - name: Deploy
