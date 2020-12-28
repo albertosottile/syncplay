@@ -2,7 +2,7 @@
 
 set -ex
 
-python3 travis/macos_app_cleaner.py
+python3 ci/macos_app_cleaner.py
 cp dist/Syncplay.app/Contents/Resources/qt.conf dist/Syncplay.app/Contents/MacOS/
 
 mkdir dist/Syncplay.app/Contents/Resources/English.lproj

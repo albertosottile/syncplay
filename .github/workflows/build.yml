@@ -66,7 +66,7 @@ jobs:
             dist_bintray/Syncplay_${{ env.VER }}.dmg
 
   snapcraft:
-    name: Build for Snap
+    name: Build Snap
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
