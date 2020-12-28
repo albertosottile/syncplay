@@ -125,3 +125,32 @@ jobs:
           name: Syncplay-${{ env.VER }}-x86_64.AppImage
           path: |
             dist_bintray/Syncplay-${{ env.VER }}-x86_64.AppImage
+
+  deb:
+    name: Build Debian package
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: travis/deb-script.sh
+
+      - name: Test
+        run: travis/deb-installation-test.sh
+
+      - name: Prepare for deployment
+        run: |
+          ls -al
+          export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
+          echo "VER=$VER" >> $GITHUB_ENV
+          mkdir dist_bintray
+          mv /tmp/syncplay.deb dist_bintray/syncplay_${VER}.deb
+          ls -al dist_bintray
+
+      - name: Deploy
+        uses: actions/upload-artifact@v2
+        with:
+          name: syncplay_${{ env.VER }}.deb
+          path: |
+            dist_bintray/syncplay_${{ env.VER }}.deb
