@@ -1,6 +1,5 @@
 name: syncplay
 summary: Syncplay
-version: build
 adopt-info: syncplay
 summary: Client/server to synchronize media playback on many computers
 description: |
@@ -16,24 +15,28 @@ description: |
 confinement: classic
 icon: syncplay/resources/syncplay.png
 grade: stable
-base: core18
+base: core20
 
 apps:
   syncplay:
-    command: python3 $SNAP/bin/syncplay
-    desktop: lib/python3.6/site-packages/syncplay/resources/syncplay.desktop
+    command: bin/python3 $SNAP/bin/syncplay
+    desktop: lib/python3.8/site-packages/syncplay/resources/syncplay.desktop
     environment:
+      PYTHONPATH: $SNAP/lib/python3.8/site-packages/
       LIBGL_DRIVERS_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri
 
   syncplay-server:
     command: bin/syncplay-server
-    desktop: lib/python3.6/site-packages/syncplay/resources/syncplay-server.desktop
+    environment:
+      PYTHONPATH: $SNAP/lib/python3.8/site-packages/
+    desktop: lib/python3.8/site-packages/syncplay/resources/syncplay-server.desktop
 
 parts:
   syncplay:
     plugin: python
-    python-version: python3
     source: .
+    build-packages:
+      - python3-wheel
     stage-packages:
       - libnss3
       - libxcomposite1
@@ -53,7 +56,19 @@ parts:
       - libxslt1.1
       - xfonts-base
       - xfonts-scalable
+      - libpython3-stdlib
+      - libpython3.8-stdlib
+      - libpython3.8-minimal
+      - python3-pip
+      - python3-setuptools
+      - python3-wheel
+      - python3-venv
+      - python3-minimal
+      - python3-distutils
+      - python3-pkg-resources
+      - python3.8-minimal
     python-packages:
+      - wheel
       - pyside2
     override-pull: |
       snapcraftctl pull

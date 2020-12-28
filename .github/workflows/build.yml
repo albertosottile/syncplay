@@ -86,7 +86,7 @@ jobs:
           export VER="$(cat syncplay/__init__.py | awk '/version/ {gsub("\047", "", $3); print $NF}')"
           echo "VER=$VER" >> $GITHUB_ENV
           mkdir dist_bintray
-          mv syncplay_build_amd64.snap dist_bintray/syncplay_${VER}_amd64.snap
+          mv syncplay_${VER}_amd64.snap dist_bintray/syncplay_${VER}_amd64.snap
           ls -al dist_bintray
 
       - name: Deploy
