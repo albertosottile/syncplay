@@ -36,8 +36,9 @@ parts:
     plugin: python
     source: .
     build-packages:
-      - python3-dev
       - python3-wheel
+    build-environment:
+      - C_INCLUDE_PATH: /usr/include/python3.8
     stage-packages:
       - libnss3
       - libxcomposite1
