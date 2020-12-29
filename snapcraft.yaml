@@ -69,6 +69,8 @@ parts:
       - python3-distutils
       - python3-pkg-resources
       - python3.8-minimal
+      - python3-pyside2.qtcore
+      - python3-pyside2.qtwidgets
     python-packages:
       - wheel
       - pyside2
